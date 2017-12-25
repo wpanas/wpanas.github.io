@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Spring Framework, Java, Angular and many others. Check it out, maybe we both
   will learn something useful today.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url:  # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
 github_username:  wpanas
 
