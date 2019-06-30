@@ -6,7 +6,7 @@ permalink: /about/
 
 ## About myself
 
-I started my journey with programming before high school. I love the trill of developing something new and useful. I found purpose in creating software.
+I started my journey with programming before high school. I love the thrill of developing something new and useful. I found purpose in creating software.
 
 My first programming language was C++ and it was really hard to grasp it without knowledge about how OS works. I shifted to PHP, where everything seemed easier. That how I get myself into making web applications. After PHP, I learned JavaScript and useful libraries like React or Angular.
 
