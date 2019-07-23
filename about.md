@@ -4,8 +4,6 @@ title: About
 permalink: /about/
 ---
 
-## About myself
-
 Waldemar Panas is a Software Engineer at [Allegro](https://allegro.pl) - the biggest e-commerce company in Poland. 
 He ensures that merchants can reliably manage millions of their offers and provide best products in best prices for polish customers.
 
