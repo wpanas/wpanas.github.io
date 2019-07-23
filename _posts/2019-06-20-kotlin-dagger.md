@@ -1,6 +1,7 @@
 ---
 title: "Dagger 2 with Kotlin"
 categories: programming
+description: Quick guide how to configure Dagger 2 with Kotlin
 ---
 
 # What made me do this article?

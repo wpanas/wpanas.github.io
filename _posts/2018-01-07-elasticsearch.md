@@ -1,7 +1,7 @@
 ---
 title: 'Elasticsearch - Incompatible type'
-date: 2018-01-07 16:43:00 +0100
 categories: programming
+description: Why Elasticsearch throws incompatible type exceptions when dealing with numbers
 ---
 
 # What is Elasticsearch?

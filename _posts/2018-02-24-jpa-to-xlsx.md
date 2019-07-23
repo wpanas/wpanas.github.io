@@ -1,7 +1,7 @@
 ---
 title: "Spring Batch - JPA to XLSX with Apache POI"
-date: 2018-02-24 14:21:32 +0100
 categories: programming
+description: Getting started with Spring Batch and processing XLSX files
 ---
 
 # What is Apache POI?

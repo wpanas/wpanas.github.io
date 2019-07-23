@@ -16,17 +16,24 @@
 title: Waldemar Panas' blog
 email:
 description: >- # this means to ignore newlines until "baseurl:"
-  This is my personal blog, where I will be posting about software engineering,
-  Spring Framework, Java, Angular and many others. Check it out, maybe we both
+  This is my personal blog, where I will be posting about software engineering. Check it out, maybe we both
   will learn something useful today.
 baseurl: "" # the subpath of your site, e.g. /blog
 url:  # the base hostname & protocol for your site, e.g. http://example.com
+
+# SEO
+google_analytics: UA-111584148-1
+
+twitter:
+  username: PanasWaldemar
+  card: summary
+
 twitter_username: PanasWaldemar
 github_username:  wpanas
 linkedin_username: w-panas
 
-# Seo
-google_analytics: UA-111584148-1
+seo:
+  type: BlogPosting
 
 # Build settings
 markdown: kramdown
