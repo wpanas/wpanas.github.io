@@ -1,7 +1,7 @@
 ---
-title:  "Maven - Build your own projects repository"
-date:   2018-01-28 13:55:01 +0100
+title: "Maven - Build your own projects repository"
 categories: tools
+description: Guide on configuring your own projects repository with Maven Wagon
 ---
 
 # What is Maven?
