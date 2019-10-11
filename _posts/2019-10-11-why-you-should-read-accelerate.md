@@ -12,7 +12,7 @@ First time I got to know about *Accelerate* was when I read
 [Technology Radar](https://www.thoughtworks.com/radar/techniques?blipid=1298). This book took first place in the section *Techniques*. 
 Specialists, that wrote that report, said that you need to adopt knowledge from this book.
 
-As Technology Radar indicates, many years of research preceded the publication of *Accelerate*. Authors conducted their research on a statistically significant group of companies.
+As *Technology Radar* indicates, many years of research preceded the publication of *Accelerate*. Authors conducted their research on a statistically significant group of companies.
 Everything that you read in *Accelerate* grounds in real-world data.
 
 *Accelerate* has three main sections: studies, discoveries and directions. Authors of this book not only concluded, what you need to measure. They also instructed what you have to do to improve those measurements.
