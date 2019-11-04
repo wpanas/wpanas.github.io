@@ -58,7 +58,7 @@ This will allow you to rerun that particular case and write a unit test to verif
 
 You should consider property-based tests as an extension of unit tests. It is not a replacement.
 
-If you are interested in topic, check out those resources.
+If you are interested in the topic, check out those resources.
 - [jqwik](https://jqwik.net/)
 - [ScalaCheck](https://www.scalacheck.org/)
 - [PropEr Testing](https://propertesting.com/toc.html)
