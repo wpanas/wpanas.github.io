@@ -11,7 +11,7 @@ I want to journal my discoveries and share them with community.
 
 This week I attended my local JUG. [SoftwareMill](https://twitter.com/softwaremill) was celebrating it's 10 year anniversary. 
 They organized two talks for us. First one was about property-based testing.
-You can read the slides [here](https://slides.com/magdastozek/property-based-testing#/), but I warn you that they are in polish.
+You can read the [slides](https://slides.com/magdastozek/property-based-testing#/), but I warn you that they are in polish.
 
 I've never given a much thought about property-based testing. I think
 that I misunderstood them. Thanks to [Magda Stożek](https://twitter.com/magdastozek) I know that it was mistake.
@@ -57,6 +57,13 @@ If something goes wrong and a test fails, the framework that runs your tests, wi
 This will allow you to rerun that particular case and write a unit test to verify, if you fixed that bug.
 
 You should consider property-based tests as an extension of unit tests. It is not a replacement.
+
+If you are interested in the topic, check out those resources.
+- [jqwik](https://jqwik.net/)
+- [ScalaCheck](https://www.scalacheck.org/)
+- [PropEr Testing](https://propertesting.com/toc.html)
+- [Examples from Magda's presentation](https://github.com/magdzikk/property-based-testing)
+- [An introduction to property-based testing](https://fsharpforfunandprofit.com/posts/property-based-testing)
 
 # Victor Rentea is awesome!
 
