@@ -3,22 +3,16 @@ title: How to setup MongoDB write concern?
 categories: ['programming']
 ---
 
+# What is MongoDB?
+
 [MongoDB](https://www.mongodb.com/) is flexible NoSQL database. It stores data as documents - data structures based on name-value pairs. Values can be nested name-value pairs, arrays of values or simple scalars. This allows you to build complex data structures.
 
 MongoDB allows you to setup when you consider data to be written.
 It might seem strange to you, but let me explain, why this option is even available.
 
-First of all, when you save data to Mongo, it doesn't have to be save on-disk. 
+First of all, when you save data to Mongo, it doesn't have to be save on-disk straight away. It is stored in memory.
 
-// todo describe journaling
-
-// todo describe acknowlagement
-
-# Standalone
-
-On-disk journal is the only option available in single `mongod` environment. There is no other nodes, that can acknowledge a write operation.
-
-# Cluster
+# CAP theorem
 
 If you consider using MongoDB or any NoSQL database, you should know about [Brewer's theorem](https://en.wikipedia.org/wiki/CAP_theorem). 
 Eric Brewer states that network partitioned database can't be simultaneously available and consistent.
@@ -28,6 +22,26 @@ It means that if your distributed database is consistent, it will not be availab
 If your database is focused on availability, it will answer you faster. Yet, you won't be sure that data that you received is the most recent.
 
 MongoDB is focused on availability.
+
+# Journaling
+
+// todo table with journaling
+
+# Write Concern
+
+| Installation | Write Concern | Latency 
+|:------------ |:------------|:------------|
+| Standalone |  w: 1 | big |
+
+
+
+// todo describe journaling
+
+// todo describe acknowlagement
+
+# Standalone
+
+On-disk journal is the only option available in single `mongod` environment. There is no other nodes, that can acknowledge a write operation.
 
 # Shards
 
@@ -39,3 +53,5 @@ If you need availability and consistency, then you should consider dropping netw
 Network partitioning is not the only way, to achieve scalability. MongoDB gives you ability to partition your database in shards. Each shard has it's own master node - a primary - and replicas nodes - secondaries.
 
 # Multi-document transactions
+
+|| 
