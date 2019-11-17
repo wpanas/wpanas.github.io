@@ -6,20 +6,25 @@ description: Getting started with Spring Batch and processing XLSX files
 
 # What is Apache POI?
 
-[Apache POI](https://poi.apache.org/) is a Java library that allows reading and writing Microsoft Documents files like XLSX or DOCSX.
-It supports Excel and Word, but also PowerPoint, Visio and others. For purpose of this article, we will focus on Excel and its current file format XLSX.
+[Apache POI](https://poi.apache.org/) is a Java library that allows reading and writing Microsoft Documents.
+It supports Excel, Word, PowerPoint and even Visio. 
+
+In this article I will focus on Excel and its current file format XLSX.
 Apache POI provides low-memory footprint API, SXSSF, for writing to XLSX files. You can specify how many rows are processed in the memory by setting a sliding window.
 If number of rows exceeds the size of the window, they are flushed to temporary files. At the end all data is transferred to specified by you destination file.
 
-Spring Framework has its own library for processing large amounts of data. It is called Batch.
-Spring Batch has support for CSV files, but natively doesn't support XLSX files. We can achive storing data to XLSX with support of Apache POI SXSSF API.
+Spring Framework has its own library for processing large amounts of data. It is called Spring Batch.
+Spring Batch has support for CSV files, but natively doesn't support XLSX files. You can achieve storing data to XLSX with support of Apache POI SXSSF API.
 
 # Spring Batch SXSSF Example
 
-Let's say we have a bookstore and we have an application that allows us store information about books available for sale.
-We want to make an order for new books, but our deliverer wants us to send him an XLSX file with list of books to deliver.
+Let's say you have a bookstore. You also have an application that allows you to store information about books available for sale.
+You want to make an order for new books. Your deliverer wants you to send him an XLSX file with list of books to deliver.
 
-Below is JPA representation of our bookstore's application logic. We have a `Book` model and a repository that keep information about books in a database.
+Below is JPA representation of your bookstore's application logic. You have a `Book` model and a repository that keep information about books in a database.
+
+`@Data` annotation is part of [Project Lombok](https://projectlombok.org/features/Data). It generates `toString`, `equals`,
+`hashCode`, getters and setters methods for all properties.
 
 ```java
 @Data
@@ -40,31 +45,30 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 }
 ```
 
-To process data from a JPA repository we need to create a `RepositoryItemReader` and a configuration for our `Bean`.
+To process data from a JPA repository you need to create a `RepositoryItemReader` and a configuration that enables batch processing and JPA repositories.
 
 ```java
 @Configuration
 @EnableBatchProcessing
 @EnableJpaRepositories
 public class BatchConfiguration {
-    ...
+    private static final int CHUNK = 100;
+
+    @Bean
+    public ItemReader<Book> bookReader(BookRepository repository) {
+        RepositoryItemReader<Book> reader = new RepositoryItemReader<>();
+        reader.setRepository(repository);
+        reader.setMethodName("findAll");
+        reader.setPageSize(CHUNK);
+        reader.setSort(singletonMap("id", Sort.Direction.ASC));
+        return reader;
+    }
 }
 
 ```
 
-```java
-@Bean
-public ItemReader<Book> bookReader(BookRepository repository) {
-    RepositoryItemReader<Book> reader = new RepositoryItemReader<>();
-    reader.setRepository(repository);
-    reader.setMethodName("findAll");
-    reader.setPageSize(CHUNK);
-    return reader;
-}
-```
-
-We set the repository and then method that will be called for fetching books from it. Next is writing fetched books to XLSX file.
-All spreadsheets are kept in a `Workbook`, so before that we have to create one.
+Fetched books are going to be written in a spreadsheet.
+All spreadsheets are kept in a `Workbook`, so before that you have to create one.
 
 ```java
 @Bean
@@ -72,57 +76,61 @@ public SXSSFWorkbook workbook() {
     return new SXSSFWorkbook(CHUNK);
 }
 ```
-We created `SXSSFWorkbook` and explicitly set number of stored in memory rows. Then we need to pass our `Workbook` to `ItemWriter`.
+
+`SXSSFWorkbook` number of stored in memory rows is explicitly set to `CHUNK`. 
+With `Workbook` you can create a spreadsheet called `Books`. It will be passed
+to `BookWriter`.
 
 ```java
 @Bean
 public ItemWriter<Book> bookWriter(SXSSFWorkbook workbook) {
-    return new BookWriter(workbook);
+    SXSSFSheet sheet = workbook.createSheet("Books");
+    return new BookWriter(sheet);
 }
 ```
 
-`BookWriter` is a class that creates a new spreadsheet and adds a new row for each book. Books' properties are saved as cells in columns.
+`BookWriter` is a class that adds a new row to a spreadsheet for each book 
+in the repository. Book properties are saved as cells in columns.
 
 ```java
 public class BookWriter implements ItemWriter<Book> {
-    private final SXSSFSheet sheet;
-    private Integer currentRowNumber;
-    private Integer currentColumnNumber;
-    private SXSSFRow row;
+    private final Sheet sheet;
 
-    BookWriter(SXSSFWorkbook workbook) {
-        this.sheet = workbook.createSheet("Books");
-        this.currentRowNumber = 0;
-        this.currentColumnNumber = 0;
+    BookWriter(Sheet sheet) {
+        this.sheet = sheet;
     }
 
     @Override
     public void write(List<? extends Book> list) {
-        list.forEach(this::writeBook);
+        for (int i = 0; i < list.size(); i++) {
+            writeRow(i, list.get(i));
+        }
     }
 
-    private void writeBook(Book book) {
-        addRow();
-        addCell(book.getId().toString());
-        addCell(book.getAuthor());
-        addCell(book.getTitle());
-        addCell(book.getIsbn());
+    private void writeRow(int currentRowNumber, Book book) {
+        List<String> columns = prepareColumns(book);
+        Row row = this.sheet.createRow(currentRowNumber);
+        for (int i = 0; i < columns.size(); i++) {
+            writeCell(row, i, columns.get(i));
+        }
     }
 
-    private void addRow() {
-        row = this.sheet.createRow(currentRowNumber);
-        currentRowNumber++;
-        currentColumnNumber = 0;
+    private List<String> prepareColumns(Book book) {
+        return asList(
+                book.getId().toString(),
+                book.getAuthor(),
+                book.getTitle(),
+                book.getIsbn()
+        );
     }
 
-    private void addCell(String value) {
-        SXSSFCell cell = row.createCell(currentColumnNumber);
+    private void writeCell(Row row, int currentColumnNumber, String value) {
+        Cell cell = row.createCell(currentColumnNumber);
         cell.setCellValue(value);
-        currentColumnNumber++;
     }
 }
 ```
-To complete transfer of our books from a JPA repository to a XLSX file, we need to create a `Job`. Every `Job` has at least one `Step` to make, to call a `Job` completed.
+To complete transfer of books from a JPA repository to a XLSX file, you need to create a `Job`. Every `Job` has at least one `Step` to make.
 
 ```java
 @Bean
@@ -142,26 +150,26 @@ public Job job(Step step, JobExecutionListener listener) {
             .build();
 }
 ```
-When a `Job` status changes, a `JobExecutionListener` is called. At the completion of the `Job`'s, we can save books from temporary files to a proper XLSX file using `FileOutputStream` and dispose created `Workbook`.
+When a `Job` status changes, a `JobExecutionListener` is called. At the completion of the `Job`, you can save books from `Workbook` to selected XLSX file using `FileOutputStream` and dispose created `Workbook`.
 
 ```java
-@Log4j
+@Slf4j
 public class JobListener implements JobExecutionListener {
     private final SXSSFWorkbook workbook;
-    private final FileOutputStream outputStream;
+    private final FileOutputStream fileOutputStream;
 
-    public JobListener(SXSSFWorkbook workbook, BookRepository bookRepository) throws IOException {
+    JobListener(SXSSFWorkbook workbook, FileOutputStream fileOutputStream) {
         this.workbook = workbook;
-        this.outputStream = new FileOutputStream("/tmp/export.xlsx");
+        this.fileOutputStream = fileOutputStream;
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         BatchStatus batchStatus = jobExecution.getStatus().getBatchStatus();
-        if (batchStatus.equals(BatchStatus.COMPLETED)) {
+        if (batchStatus == COMPLETED) {
             try {
-                this.workbook.write(outputStream);
-                outputStream.close();
+                workbook.write(fileOutputStream);
+                fileOutputStream.close();
                 workbook.dispose();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
