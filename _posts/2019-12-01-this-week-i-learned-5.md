@@ -1,7 +1,7 @@
 ---
-title: "This week I learned #5 - how to setup reactive client with OAuth in Spring Boot"
+title: "This week I learned #5 - How to setup reactive client with OAuth in Spring Boot"
 categories: learning
-description: I will show you how to setup WebClient with OAuth. This is also the summary of last four weeks of learning.
+description: I will show you how to setup WebClient with OAuth. It is also the summary of last four weeks of learning.
 ---
 
 # WebClient with OAuth

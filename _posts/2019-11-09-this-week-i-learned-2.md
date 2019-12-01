@@ -1,7 +1,7 @@
 ---
-title: "This week I learned - #2"
+title: "This week I learned #2 - Clean architecture with Victor Rentea, working with legacy code and sentiment analysis"
 categories: learning
-description: The second post of series about my weekly programming discoveries
+description: I watched best talk of 2019, and I took part in ML hackathon. See how it went!
 ---
 
 # Victor Rentea at Devoxx Belgium

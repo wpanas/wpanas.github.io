@@ -1,7 +1,7 @@
 ---
-title: "This week I learned - #4"
+title: "This week I learned #4 - Architecture Guilds, Event-driven systems and talk at University"
 categories: learning
-description: Architecture Guilds, event sourcing and talk at university
+description: I read best book about Event Sourcing. I had a talk at University.
 ---
 
 # Architecture Guilds
@@ -28,7 +28,7 @@ Jakub Nabrdalik introduced a solution that covers part of these conclusions -- a
 Guilds are a way for spreading and cultivate the knowledge.
 To be effective, they need to be open and share there work with whole company. Members of the guild have to guide and teach.
 
-To cover the rest of these conclusions Jakub Nabradlik was convincing
+To cover the rest of these conclusions Jakub Nabrdalik was convincing
 the audience to implement [C4 model](https://c4model.com/) 
 of theirs software architecture in open for all developers repository. 
 This way every developer could introduce changes
