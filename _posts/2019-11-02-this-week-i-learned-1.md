@@ -1,7 +1,7 @@
 ---
-title: "This week I learned - #1"
+title: "This week I learned #1 - Property-based testing, usefulness of HATEOAS and Victor Rentea awesomeness"
 categories: learning
-description: The first post of series about my weekly programming discoveries
+description: I went to SoftwareMill's 10 years anniversary.
 ---
 
 Every week I try to learn something new and grow as a software developer.

@@ -1,7 +1,7 @@
 ---
-title: "This week I learned - #3"
+title: "This week I learned #3 - How to share knowledge at Code Retreat"
 categories: learning
-description: The third post of series about my weekly programming discoveries
+description: I took part in Code Retreat 2019 at Allegro.
 ---
 
 # Code Retreat 2019
