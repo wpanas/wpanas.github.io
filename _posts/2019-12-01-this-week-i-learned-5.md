@@ -19,7 +19,21 @@ Below, I will show you, how to make WebClient
 for [Petfinder's public API](https://www.petfinder.com/developers/)
 that will authorize itself.
 
-First, you need to add configuration to `src/main/resources/application.yml`. In this example my client
+Beside `Spring Reactive Web`, you will need `OAuth 2 Client` dependency. You can start developing your application from this 
+[bootstrapped project](https://start.spring.io/#!type=maven-project&language=kotlin&platformVersion=2.2.1.RELEASE&packaging=jar&jvmVersion=1.8&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=webflux,oauth2-client) or add following dependencies to your Spring Boot application.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+```
+
+Next you need to add configuration to `src/main/resources/application.yml`. In this example my client
 will be distinguished by key `pet-finder`. This key is a registration id and will be needed later. You can have multiple OAuth configurations and those registration ids
 will be used to separate them.
 
@@ -29,7 +43,7 @@ spring.security.oauth2.client:
     registration.pet-finder.authorization-grant-type: "client_credentials"
 ```
 
-Next, setup configuration with a `WebClient` bean. To authorize to Petfinder API,
+Then setup configuration with a `WebClient` bean. To authorize to Petfinder API,
 `WebClient` needs to be extended with a filter -- `ServerOAuth2AuthorizedClientExchangeFilterFunction`.
 Using registration id -- `pet-finder` -- setup previously configured token URI and authorization grand type.
 
