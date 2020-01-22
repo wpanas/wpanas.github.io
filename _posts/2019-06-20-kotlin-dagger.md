@@ -1,5 +1,5 @@
 ---
-title: "Dagger 2 with Kotlin"
+title: "Using Dagger 2 in Android and Kotlin"
 categories: programming
 description: Quick guide how to configure Dagger 2 with Kotlin
 ---
