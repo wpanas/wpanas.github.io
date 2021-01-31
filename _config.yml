@@ -28,7 +28,9 @@ twitter:
   username: PanasWaldemar
   card: summary
 
-author: Waldemar Panas
+author: 
+  twitter: PanasWaldemar
+  name: Waldemar Panas
 
 twitter_username: PanasWaldemar
 github_username:  wpanas
