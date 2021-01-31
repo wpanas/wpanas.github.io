@@ -34,3 +34,13 @@ iframe.yt {
     margin: 0 auto;
     padding: 40px;
 }
+
+.post-content {
+    p {
+        > * {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+    }
+}
