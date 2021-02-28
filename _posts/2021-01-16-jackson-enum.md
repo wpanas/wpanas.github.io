@@ -46,6 +46,19 @@ when (objectMapper.readValue<Pixel>(jsonString).color) {
 }
 ``` 
 
+# How to handle no value or null?
+
+I showed you, how to handle unknown values. This doesn't solve handling JSON with no `color` property or `color` set to `null`. 
+Using Kotlin we can set `color` property to be nullable, but there is a better way.
+All you need to do is to use default value.
+
+```kotlin
+data class Pixel(@JsonSetter(nulls = Nulls.AS_EMPTY) val color: Color = Color.UNKNOWN)
+```
+
+[@JsonSetter] is set up to handle `null` as empty value. This way
+when `color` property is unset, then default `Color.UNKNOWN` is used.
+
 You can see full example [here].
 
 
@@ -60,3 +73,5 @@ You can see full example [here].
 [jackson-module-kotlin]: https://github.com/FasterXML/jackson-module-kotlin
 
 [here]: https://github.com/wpanas/jackson-default-enum
+
+[@JsonSetter]: https://fasterxml.github.io/jackson-annotations/javadoc/2.12/com/fasterxml/jackson/annotation/JsonSetter.html
