@@ -11,7 +11,7 @@ The [official documentation for setting up OAuth2 with WebFlux](https://docs.spr
 was helpful, but not quite covered my case. 
 Later, I found Baeldung's article 
 -- [Spring Security OAuth Login with WebFlux](https://www.baeldung.com/spring-oauth-login-webflux#webclient). I tried using his solution, but 
-`UnAuthenticatedServerOAuth2AuthorizedClientRepository` exception was thrown, when I booted the application up. 
+<span class="break">`UnAuthenticatedServerOAuth2AuthorizedClientRepository`</span> exception was thrown, when I booted the application up. 
 I searched and found the final peace 
 at [StackOverflow](https://stackoverflow.com/questions/56973321/spring-boot-reactive-webclient-serverwebexchange-must-be-null-when-spring-secu/57788475#57788475).
 
@@ -44,7 +44,7 @@ spring.security.oauth2.client:
 ```
 
 Then setup configuration with a `WebClient` bean. To authorize to Petfinder API,
-`WebClient` needs to be extended with a filter -- `ServerOAuth2AuthorizedClientExchangeFilterFunction`.
+`WebClient` needs to be extended with a filter -- <span class="break">`ServerOAuth2AuthorizedClientExchangeFilterFunction`</span>.
 Using registration id -- `pet-finder` -- setup previously configured token URI and authorization grand type.
 
 ```kotlin
