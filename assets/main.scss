@@ -37,7 +37,7 @@ iframe.yt {
 
 .post-content {
     p {
-        > * {
+        > span.break {
             overflow-wrap: break-word;
             word-wrap: break-word;
             word-break: break-all;

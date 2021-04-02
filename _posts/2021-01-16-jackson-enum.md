@@ -9,9 +9,9 @@ You have to decide, what to do. If you don't, your application
 will fail, when external resource changes and new enum value is 
 added.
 
-Since Jackson 2.0, you can use [READ_UNKNOWN_ENUM_VALUES_AS_NULL] feature. Still you will have to handle `null`, when unknown value appears in deserialized enum.
+Since Jackson 2.0, you can use <span class="break">[READ_UNKNOWN_ENUM_VALUES_AS_NULL]</span> feature. Still you will have to handle `null`, when unknown value appears in deserialized enum.
 
-Since 2.8 there is a better way. Use [READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE].
+Since 2.8 there is a better way. Use <span class="break">[READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE]</span>.
 This feature allows you, to select a value that will be used by default. Let's see, how it will look.
 
 Provided examples are in [Kotlin] and use [jackson-module-kotlin] 2.12+.
@@ -25,7 +25,7 @@ enum class Color {
 data class Pixel(val color: Color)
 ```
 
-Don't forget to enable `READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE`,
+Don't forget to enable <span class="break">`READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE`</span>,
 when configuring `ObjectMapper`.
 
 ```kotlin
