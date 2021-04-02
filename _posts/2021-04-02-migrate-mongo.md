@@ -1,6 +1,5 @@
 ---
 title: "How to migrate MongoDB?"
-layout: post
 ---
 
 MongoDB is advertised as ["schemaless"] and it's true. Until

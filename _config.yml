@@ -55,6 +55,7 @@ defaults:
     values:
       layout: "blog"
       comments: true
+      image: /assets/images/writing-notes-idea-class-7103.jpg
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
