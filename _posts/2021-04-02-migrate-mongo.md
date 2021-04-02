@@ -111,7 +111,7 @@ changes. If your application acts like this, then you can migrate
 documents while fetching them. Just add a deserializer that
 according to `schemaVersion` value does proper migration.
 
-You can find more detailed example in this [GitHub repository]. I used with [Kotlin], [Spring Boot] & [Testcontainers].
+You can find more detailed example in this [GitHub repository](https://github.com/wpanas/migrate-mongo). I used with [Kotlin], [Spring Boot] & [Testcontainers].
 
 # How to migrate documents in the background?
 
@@ -123,7 +123,6 @@ This way background operation will be efficient & you will be
 sure that all documents are migrated.
 
 ["schemaless"]: https://www.mongodb.com/unstructured-data/schemaless
-[GitHub repository]: https://github.com/wpanas/migrate-mongo
 [The attribute pattern]: https://www.mongodb.com/blog/post/building-with-patterns-the-attribute-pattern
 [background]: https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/#options-for-all-index-types
 [GitHub repository]: https://example.com
