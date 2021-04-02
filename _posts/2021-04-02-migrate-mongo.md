@@ -14,7 +14,7 @@ tens of millions of documents in your collection. At that point this question ch
 
 I will proceed with a short story that adds context
 to a purpose of migrating data. If you don't need it, just go to
-section: *How to migrate documents in MongoDB collection?*.
+section: [How to migrate documents in MongoDB collection?].
 
 # When do you need to migrate documents?
 
@@ -119,9 +119,10 @@ Start with adding an index to field `schemaVersion`. If you use MongoDB older th
 to add the index in the [background]! 
 
 Then iterate through documents in collection using the new index.
-This way background operation will be efficient & you will be
+This way a background operation will be efficient & you will be
 sure that all documents are migrated.
 
+[How to migrate documents in MongoDB collection?]: #how-to-migrate-documents-in-mongodb-collection
 ["schemaless"]: https://www.mongodb.com/unstructured-data/schemaless
 [The attribute pattern]: https://www.mongodb.com/blog/post/building-with-patterns-the-attribute-pattern
 [background]: https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/#options-for-all-index-types
