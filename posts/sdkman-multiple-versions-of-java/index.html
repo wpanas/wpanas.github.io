@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> SDKMAN! - Multiple versions of Java | Waldemar Panas&#39; blog</title>
+  <link rel = 'canonical' href = 'https://blog.wpanas.eu/posts/sdkman-multiple-versions-of-java/'>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="SDKMAN! - Multiple versions of Java" />
+<meta property="og:description" content="A quick introduction to managing multiple versions of Java" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.wpanas.eu/posts/sdkman-multiple-versions-of-java/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2017-12-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-12-25T00:00:00+00:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SDKMAN! - Multiple versions of Java"/>
+<meta name="twitter:description" content="A quick introduction to managing multiple versions of Java"/>
+
+  
+  
+    
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://blog.wpanas.eu/css/styles.8c2232bc6d6d80dfa85de52d09f338e16b3e3619a06ae32a1f3fd962c97f7ec3b78432bca07802d5563f48d33f0761c4f8bba9daf8130e400f5ac8679b973699.css" integrity="sha512-jCIyvG1tgN&#43;oXeUtCfM44Ws&#43;NhmgauMqHz/ZYsl/fsO3hDK8oHgC1VY/SNM/B2HE&#43;Lup2vgTDkAPWshnm5c2mQ=="> 
+
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://blog.wpanas.eu/images/favicon.ico" />
+
+  
+  
+  
+  
+  
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111584148-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li>
+          <a class="icon" href="https://blog.wpanas.eu/posts/elasticsearch-fix-an-incompatible-type/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&text=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&is_video=false&description=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=SDKMAN%21%20-%20Multiple%20versions%20of%20Java&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&name=SDKMAN%21%20-%20Multiple%20versions%20of%20Java&description=A%20quick%20introduction%20to%20managing%20multiple%20versions%20of%20Java" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&t=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-sdkman">What is SDKMAN!</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#common-usage">Common usage</a></li>
+    <li><a href="#installing-java-11">Installing Java 11</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        SDKMAN! - Multiple versions of Java
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2017-12-25 00:00:00 &#43;0000 UTC" itemprop="datePublished">2017-12-25</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="what-is-sdkman">What is SDKMAN!</h2>
+<p><a href="https://sdkman.io/">SDKMAN!</a> is a development tool that allows you to install and manage Java, Scala, Groovy, Maven and many other tools, libraries and programming languages united under JVM platform. It is created for GNU/Linux&rsquo;s and MacOS' users.</p>
+<h2 id="installation">Installation</h2>
+<p>The first step is to paste this command in your terminal and submit it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -s <span style="color:#e6db74">&#34;https://get.sdkman.io&#34;</span> | bash
+</code></pre></div><p>This will launch the process of installation, which might require your input. After successful installation paste this command and you are ready to work.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span>
+</code></pre></div><h2 id="common-usage">Common usage</h2>
+<p>You can list all available versions of desired SDK using below command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sdk list &lt;sdk&gt;
+</code></pre></div><p>Here is output of this command for Groovy.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sdk list groovy
+
+<span style="color:#f92672">================================================================================</span>
+Available Groovy Versions
+<span style="color:#f92672">================================================================================</span>
+     3.0.0-beta-3        2.4.8               2.1.4               1.7.6          
+     3.0.0-beta-2        2.4.7               2.1.3               1.7.5          
+     3.0.0-beta-1        2.4.6               2.1.2               1.7.4          
+     3.0.0-alpha-4       2.4.5               2.1.1               1.7.3          
+     3.0.0-alpha-3       2.4.4               2.1.0               1.7.2          
+     3.0.0-alpha-2       2.4.3               2.0.8               1.7.1          
+     3.0.0-alpha-1       2.4.2               2.0.7               1.7.0          
+     2.6.0-alpha-4       2.4.1               2.0.6               1.6.9          
+     2.6.0-alpha-3       2.4.0               2.0.5               1.6.8          
+     2.6.0-alpha-2       2.3.11              2.0.4               1.6.7          
+     2.6.0-alpha-1       2.3.10              2.0.3               1.6.6          
+     2.5.8               2.3.9               2.0.2               1.6.5          
+     2.5.7               2.3.8               2.0.1               1.6.4          
+     2.5.6               2.3.7               2.0.0               1.6.3          
+     2.5.5               2.3.6               1.8.9               1.6.2          
+     2.5.4               2.3.5               1.8.8               1.6.1          
+     2.5.3               2.3.4               1.8.7               1.6.0          
+     2.5.2               2.3.3               1.8.6               1.5.8          
+     2.5.1               2.3.2               1.8.5               1.5.7          
+     2.5.0               2.3.1               1.8.4               1.5.6          
+     2.4.17              2.3.0               1.8.3               1.5.5          
+     2.4.16              2.2.2               1.8.2               1.5.4          
+     2.4.15              2.2.1               1.8.1               1.5.3          
+     2.4.14              2.2.0               1.8.0               1.5.2          
+     2.4.13              2.1.9               1.7.11              1.5.1          
+     2.4.12              2.1.8               1.7.10              1.5.0          
+     2.4.11              2.1.7               1.7.9                              
+     2.4.10              2.1.6               1.7.8                              
+     2.4.9               2.1.5               1.7.7                              
+
+<span style="color:#f92672">================================================================================</span>
++ - local version
+* - installed
+&gt; - currently in use
+<span style="color:#f92672">================================================================================</span>
+</code></pre></div><p>Installation is effortless. Select any of available versions or just skip it and install the currently stable version.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sdk install &lt;sdk&gt; <span style="color:#f92672">(</span>&lt;version&gt;<span style="color:#f92672">)</span>
+</code></pre></div><h2 id="installing-java-11">Installing Java 11</h2>
+<p>Let&rsquo;s try to install Java 11. Paste this line into your terminal and hit Enter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sdk install java 11.0.11.hs-adpt
+</code></pre></div><p>You will see following output.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Downloading: java 11.0.11.hs-adpt
+
+In progress...
+
+<span style="color:#75715e">######################################################################## 100,0%</span>
+
+Repackaging Java 11.0.11.hs-adpt...
+
+Done repackaging...
+
+Installing: java 11.0.11.hs-adpt
+Done installing!
+
+Do you want java 11.0.11.hs-adpt to be set as default? <span style="color:#f92672">(</span>Y/n<span style="color:#f92672">)</span>: 
+
+Setting java 11.0.11.hs-adpt as default.
+</code></pre></div><p>All installed Java versions will be available in the folder <code>$SDKMAN_DIR/candiadates/java</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ls $SDKMAN_DIR/candidates/java -l
+total <span style="color:#ae81ff">8</span>
+drwxr-xr-x.  <span style="color:#ae81ff">9</span> wpanas wpanas <span style="color:#ae81ff">4096</span> 10-18 17:44 8u152-zulu
+drwxr-xr-x. <span style="color:#ae81ff">10</span> wpanas wpanas <span style="color:#ae81ff">4096</span> 11-04 16:22 9.0.1-zulu
+lrwxrwxrwx.  <span style="color:#ae81ff">1</span> wpanas wpanas   <span style="color:#ae81ff">47</span> 12-25 17:23 current -&gt; /home/wpanas/.sdkman/candidates/java/11.0.11.hs-adpt
+</code></pre></div><p>You can check if installation was successful by checking current Java version. The command <code>java --version</code> will not work in Java 8 or any previous, so let&rsquo;s try it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java --version
+openjdk 11.0.11 2021-04-20
+OpenJDK Runtime Environment AdoptOpenJDK-11.0.11+9 <span style="color:#f92672">(</span>build 11.0.11+9<span style="color:#f92672">)</span>
+OpenJDK 64-Bit Server VM AdoptOpenJDK-11.0.11+9 <span style="color:#f92672">(</span>build 11.0.11+9, mixed mode<span style="color:#f92672">)</span>
+</code></pre></div><p>As you can see Java 11 is installed and ready to work. If you want to switch default Java&rsquo;s version use command <code>sdk default java &lt;version&gt;</code>, but you can also switch version only for current terminal session using <code>sdk use java &lt;version&gt;</code>. It&rsquo;s very convenient, if you want to check, how your code would behave on different Java version.</p>
+<h2 id="summary">Summary</h2>
+<p>SDKMAN! is an essential tool for developers using Java, Groovy or any other JVM language. Check it out and you will not be disappointed.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+  
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+          <script type="text/javascript">
+          
+          (function() {
+              
+              
+              
+              
+          
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              var disqus_shortname = 'waldemar-panas-blog';
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+    </div>
+
+  
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
+         
+          <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-sdkman">What is SDKMAN!</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#common-usage">Common usage</a></li>
+    <li><a href="#installing-java-11">Installing Java 11</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&text=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&is_video=false&description=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=SDKMAN%21%20-%20Multiple%20versions%20of%20Java&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&title=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&name=SDKMAN%21%20-%20Multiple%20versions%20of%20Java&description=A%20quick%20introduction%20to%20managing%20multiple%20versions%20of%20Java" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fsdkman-multiple-versions-of-java%2f&t=SDKMAN%21%20-%20Multiple%20versions%20of%20Java" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Waldemar Panas 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+<script src=/js/code-copy.js></script>
+
+
+
+</html>

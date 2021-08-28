@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Waldemar Panas&#39; blog</title>
+    <link>https://blog.wpanas.eu/posts/</link>
+    <description>Recent content in Posts on Waldemar Panas&#39; blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Waldemar Panas</copyright>
+    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.wpanas.eu/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to migrate MongoDB</title>
+      <link>https://blog.wpanas.eu/posts/how-to-migrate-mongodb/</link>
+      <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/how-to-migrate-mongodb/</guid>
+      <description>MongoDB is advertised as &amp;ldquo;schemaless&amp;rdquo; and it&amp;rsquo;s true. Until you need to make a breaking change to documents stored in your collection.
+In that situation you realize that using schemaless database doesn&amp;rsquo;t free from migrating data when it&amp;rsquo;s structure changes.
+How to do it in most efficient fashion? Let&amp;rsquo;s say you have tens of millions of documents in your collection. At that point this question changes to: how to do it without technical break?</description>
+    </item>
+    
+    <item>
+      <title>Leader Only Spring Boot Starter</title>
+      <link>https://blog.wpanas.eu/posts/leader-only-spring-boot-starter/</link>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/leader-only-spring-boot-starter/</guid>
+      <description>Introduction Two weeks ago I released a library leader-only-spring-boot-starter. It leverages Apache Curator to restrict computation to a single application node. Underneath the library use LeaderLatch. All this is backed by Apache Zookeeper. If you want to use it, you need to have Zookeeper up &amp;amp; running. The library was created for applications that are developed with Spring Boot.
+Usage First of all you need to add dependency to your project.</description>
+    </item>
+    
+    <item>
+      <title>Best way to handle unknown enum values using Jackson</title>
+      <link>https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/</link>
+      <pubDate>Sat, 16 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/</guid>
+      <description>In this article I want to show you how to handle enums using Jackson. It not as easy as it seems. Jackson can&amp;rsquo;t handle unknown enum values by default. You have to decide, what to do. If you don&amp;rsquo;t, your application will fail, when external resource changes and new enum value is added.
+How to handle unknown values? Since Jackson 2.0, you can use READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature. Still you will have to handle null, when unknown value appears in deserialized enum.</description>
+    </item>
+    
+    <item>
+      <title>Best Machine Learning tutorials</title>
+      <link>https://blog.wpanas.eu/posts/best-ml-tutorials/</link>
+      <pubDate>Sun, 26 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/best-ml-tutorials/</guid>
+      <description>Introduction The best way to learn something is to start doing it. This thought guides me through my career and it never failed me. In this short article, I will give you a quickstart to master machine learning.
+Before you start doing tutorials about machine learning, you should learn Python. There are many resources to do that. For newbies I recommend learnpython.org. For those, who are familiar with programming, go straight to Learn Python 3 in Y minutes.</description>
+    </item>
+    
+    <item>
+      <title>How to setup reactive client with OAuth in Spring Boot</title>
+      <link>https://blog.wpanas.eu/posts/this-week-i-learned-5/</link>
+      <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/this-week-i-learned-5/</guid>
+      <description>WebClient with OAuth I started a new project with WebFlux and wanted to access API with OAuth2 authorization. The official documentation for setting up OAuth2 with WebFlux was helpful, but not quite covered my case. Later, I found Baeldung&amp;rsquo;s article &amp;ndash; Spring Security OAuth Login with WebFlux. I tried using his solution, but UnAuthenticatedServerOAuth2AuthorizedClientRepositoryexception was thrown, when I booted the application up. I searched and found the final peace at StackOverflow.</description>
+    </item>
+    
+    <item>
+      <title>How to share knowledge at Code Retreat</title>
+      <link>https://blog.wpanas.eu/posts/this-week-i-learned-3/</link>
+      <pubDate>Tue, 26 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/this-week-i-learned-3/</guid>
+      <description>Code Retreat 2019 Krystian Adamski, my teammate, sparked the idea and eventually organized on Friday a Code Retreat event in Allegro. He and Karol Teske did an excellent job in Poznań. I&amp;rsquo;m sure that my colleagues from Warsaw have similar opinion of Maciej Szarliński, Bartosz Balukiewicz and Kamil Halicki, who organized the event there.
+It was a blast! I appreciate the atmosphere and shared knowledge. The most developing thing were the retrospectives after each of the sessions.</description>
+    </item>
+    
+    <item>
+      <title>Architecture Guilds, Event-driven systems and talk at University</title>
+      <link>https://blog.wpanas.eu/posts/this-week-i-learned-4/</link>
+      <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/this-week-i-learned-4/</guid>
+      <description>Architecture Guilds Jakub Nabrdalik had a talk about mistakes made when moving to microservices at GeeCon Prague 2019.
+  You can watch it also in polish from Confitura 2019.
+  He did a thesis that majority of companies that migrated to microservices from a legacy monolith made similar mistakes. From his experience as a consultant, he described what was done poorly and how to do it better.
+Big part of talk was about software architecture and how it was enforced in companies.</description>
+    </item>
+    
+    <item>
+      <title>Clean architecture with Victor Rentea, working with legacy code and sentiment analysis</title>
+      <link>https://blog.wpanas.eu/posts/this-week-i-learned-2/</link>
+      <pubDate>Sat, 09 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/this-week-i-learned-2/</guid>
+      <description>Victor Rentea at Devoxx Belgium If you read article from the previous week, you might think that I&amp;rsquo;m Victor Rentea&amp;rsquo;s fanboy. And you goddamn right! This time Victor had a talk about clean code and refactoring. The best part of his talk was the live-coding session. Victor made an architecture kata and it felt like a big mob programming. Must watch! However, I must warn you. It is over 2 hours.</description>
+    </item>
+    
+    <item>
+      <title>Property-based testing, usefulness of HATEOAS and Victor Rentea awesomeness</title>
+      <link>https://blog.wpanas.eu/posts/this-week-i-learned-1/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/this-week-i-learned-1/</guid>
+      <description>Every week I try to learn something new and grow as a software developer. I want to journal my discoveries and share them with community.
+Property-based testing This week I attended my local JUG. SoftwareMill was celebrating it&amp;rsquo;s 10 year anniversary. They organized two talks for us. First one was about property-based testing. You can read the slides, but I warn you that they are in polish.
+I&amp;rsquo;ve never given a much thought about property-based testing.</description>
+    </item>
+    
+    <item>
+      <title>Why you should read Accelerate</title>
+      <link>https://blog.wpanas.eu/posts/why-you-should-read-accelerate/</link>
+      <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/why-you-should-read-accelerate/</guid>
+      <description>Nicole Forsgren, Jez Humble and Gene Kim published Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations in March 2018.
+First time I got to know about Accelerate was when I read Technology Radar. This book took first place in the section Techniques. Specialists, that wrote that report, said that you need to adopt knowledge from this book.
+As Technology Radar indicates, many years of research preceded the publication of Accelerate.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with RSocket</title>
+      <link>https://blog.wpanas.eu/posts/getting-started-with-rsocket/</link>
+      <pubDate>Mon, 22 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/getting-started-with-rsocket/</guid>
+      <description>In this article I will present you how to use RSocket with Spring Boot.
+What is RSocket? RSocket is a bi-directional message-driven communication protocol. It features an advanced communication flow beyond standard request/response. You can response with a single message, a stream of messages or don&amp;rsquo;t response at all. A server can also start a communication on an established channel with a client.
+RSocket allows you to communicate using following transport protocols:</description>
+    </item>
+    
+    <item>
+      <title>Using Dagger 2 in Android with Kotlin</title>
+      <link>https://blog.wpanas.eu/posts/using-dagger-2-in-android-with-kotlin/</link>
+      <pubDate>Thu, 20 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/using-dagger-2-in-android-with-kotlin/</guid>
+      <description>What made me do this article? I started programming Android applications few months ago. I went through fundamental and more advanced guides. None of them mentioned dependency injection. Without it I struggled to make proper unit tests. I decided that I have to make it work.
+I looked around and found Dagger 2. The project developed by Google that provides dependency injection for Android applications. Sadly, I had a hard time making it work with Kotlin.</description>
+    </item>
+    
+    <item>
+      <title>Spring I/O 2019</title>
+      <link>https://blog.wpanas.eu/posts/spring-io-2019/</link>
+      <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/spring-io-2019/</guid>
+      <description>The future of Spring Framework is reactive and it is at your fingertips.
+The opening keynote The Spring I/O conference took place in Barcelona at 16-17 May 2019. Big names of Spring Framework like Ben Hale and Jürgen Höller presented what is up with Spring in 2019.
+  The most frequent topics The recurring topic of last years is reactive programming. Ben Hale and Jürgen Höller proved that they are aware of poor data access and networking tooling.</description>
+    </item>
+    
+    <item>
+      <title>Android - learning resources</title>
+      <link>https://blog.wpanas.eu/posts/android-learning-resources/</link>
+      <pubDate>Sat, 06 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/android-learning-resources/</guid>
+      <description>Where to start? I write this article from perspective of Java programmer. So I assume that you already know Java and Gradle.
+Before you start making mobile apps, it&amp;rsquo;s good to know Kotlin. I recommend you to try out Kotlin Koans. It&amp;rsquo;s an easy to follow series of exercises that will help you have a grasp of programming in Kotlin.
+A good beginning with a mobile application development is the Build your first app guide.</description>
+    </item>
+    
+    <item>
+      <title>Spring Batch - JPA to XLSX with Apache POI</title>
+      <link>https://blog.wpanas.eu/posts/spring-batch-jpa-to-xlsx/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/spring-batch-jpa-to-xlsx/</guid>
+      <description>What is Apache POI? Apache POI is a Java library that allows reading and writing Microsoft Documents. It supports Excel, Word, PowerPoint and even Visio.
+In this article I will focus on Excel and its current file format XLSX. Apache POI provides low-memory footprint API, SXSSF, for writing to XLSX files. You can specify how many rows are processed in the memory by setting a sliding window. If number of rows exceeds the size of the window, they are flushed to temporary files.</description>
+    </item>
+    
+    <item>
+      <title>Build your own projects repository using Maven</title>
+      <link>https://blog.wpanas.eu/posts/maven-build-your-own-projects-repository/</link>
+      <pubDate>Sun, 28 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/maven-build-your-own-projects-repository/</guid>
+      <description>What is Maven? Apache Maven is a development tool that simplify building and managing dependencies of projects. It uses a XML file called pom.xml for configuration.
+What is a Maven repository? A repository in Maven is a list of ready to use artifacts. If you add a repository to your pom.xml file, you can use any of its artifacts as a dependency for your project. You can also use projects that are locally stored on your computer without repository.</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch - Fix an incompatible type</title>
+      <link>https://blog.wpanas.eu/posts/elasticsearch-fix-an-incompatible-type/</link>
+      <pubDate>Sun, 07 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/elasticsearch-fix-an-incompatible-type/</guid>
+      <description>What is Elasticsearch? Elasticsearch is a search and analitycs engine. It allows you to store data and search through it with ease, but it is not a database engine per se. It doesn&amp;rsquo;t guaranties ACID. Elasticsearch stores data in the index. It is special construction that fastens search queries, but it is vulnerable for corruption. It&amp;rsquo;s not a problem since all your data should be stored in proper database engine like MySQL or MongoDB, so index can be rebuilt from it.</description>
+    </item>
+    
+    <item>
+      <title>SDKMAN! - Multiple versions of Java</title>
+      <link>https://blog.wpanas.eu/posts/sdkman-multiple-versions-of-java/</link>
+      <pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/sdkman-multiple-versions-of-java/</guid>
+      <description>What is SDKMAN! SDKMAN! is a development tool that allows you to install and manage Java, Scala, Groovy, Maven and many other tools, libraries and programming languages united under JVM platform. It is created for GNU/Linux&amp;rsquo;s and MacOS&#39; users.
+Installation The first step is to paste this command in your terminal and submit it.
+curl -s &amp;#34;https://get.sdkman.io&amp;#34; | bash This will launch the process of installation, which might require your input.</description>
+    </item>
+    
+  </channel>
+</rss>

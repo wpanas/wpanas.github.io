@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Waldemar Panas&#39; blog</title>
+    <link>https://blog.wpanas.eu/categories/</link>
+    <description>Recent content in Categories on Waldemar Panas&#39; blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Waldemar Panas</copyright><atom:link href="https://blog.wpanas.eu/categories/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

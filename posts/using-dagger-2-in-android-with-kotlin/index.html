@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Using Dagger 2 in Android with Kotlin | Waldemar Panas&#39; blog</title>
+  <link rel = 'canonical' href = 'https://blog.wpanas.eu/posts/using-dagger-2-in-android-with-kotlin/'>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Using Dagger 2 in Android with Kotlin" />
+<meta property="og:description" content="Quick guide how to configure Dagger 2 with Kotlin" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.wpanas.eu/posts/using-dagger-2-in-android-with-kotlin/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-06-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-20T00:00:00+00:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Using Dagger 2 in Android with Kotlin"/>
+<meta name="twitter:description" content="Quick guide how to configure Dagger 2 with Kotlin"/>
+
+  
+  
+    
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://blog.wpanas.eu/css/styles.8c2232bc6d6d80dfa85de52d09f338e16b3e3619a06ae32a1f3fd962c97f7ec3b78432bca07802d5563f48d33f0761c4f8bba9daf8130e400f5ac8679b973699.css" integrity="sha512-jCIyvG1tgN&#43;oXeUtCfM44Ws&#43;NhmgauMqHz/ZYsl/fsO3hDK8oHgC1VY/SNM/B2HE&#43;Lup2vgTDkAPWshnm5c2mQ=="> 
+
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://blog.wpanas.eu/images/favicon.ico" />
+
+  
+  
+  
+  
+  
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111584148-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://blog.wpanas.eu/posts/spring-io-2019/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://blog.wpanas.eu/posts/getting-started-with-rsocket/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&text=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&is_video=false&description=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Using%20Dagger%202%20in%20Android%20with%20Kotlin&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&name=Using%20Dagger%202%20in%20Android%20with%20Kotlin&description=Quick%20guide%20how%20to%20configure%20Dagger%202%20with%20Kotlin" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&t=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-made-me-do-this-article">What made me do this article?</a></li>
+    <li><a href="#how-to-setup-dagger-2-with-kotlin">How to setup Dagger 2 with Kotlin?</a></li>
+    <li><a href="#provide-modules-to-inject">Provide modules to inject</a></li>
+    <li><a href="#prepare-your-application">Prepare your Application</a></li>
+    <li><a href="#inject-dependencies">Inject dependencies</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Using Dagger 2 in Android with Kotlin
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2019-06-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-06-20</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="what-made-me-do-this-article">What made me do this article?</h2>
+<p>I started programming Android applications few months ago. I went through fundamental and more advanced guides. None of them mentioned dependency injection. Without it I struggled to make proper unit tests. I decided that I have to make it work.</p>
+<p>I looked around and found <a href="https://dagger.dev">Dagger 2</a>. The project developed by Google that provides dependency injection for Android applications. Sadly, I had a hard time making it work with Kotlin.</p>
+<p>I have read many articles, but they had only scraps of necessary information. Combining them together I made it work. This post is a summary of my small research.
+It won&rsquo;t be about Dagger 2 basics. If you want to know more, read official <a href="https://dagger.dev/users-guide">user&rsquo;s guide</a>.
+Those are articles that inspired me:</p>
+<ul>
+<li><a href="https://medium.com/@malinitin/setup-dagger-2-11-on-kotlin-project-2257ad84ad7c">Setup Dagger 2.11 on Kotlin Project</a></li>
+<li><a href="https://medium.com/@serapbercin001/how-to-use-android-injector-for-activity-and-fragment-objects-through-new-dagger-2-with-kotlin-704eb8a98c43">How to use Android Injector for Activity and Fragment objects through New Dagger 2 (with Kotlin)</a></li>
+<li><a href="https://android.jlelse.eu/new-android-injector-with-dagger-2-part-3-fe3924df6a89">New Android Injector with Dagger 2 — part 3</a></li>
+<li><a href="https://medium.com/@rachitmishra/dagger-2-with-kotlin-59d3c2440f4f">Dependency Injection on Android with Dagger 2 (and Kotlin) — Part 1</a></li>
+</ul>
+<h2 id="how-to-setup-dagger-2-with-kotlin">How to setup Dagger 2 with Kotlin?</h2>
+<p>First of all, add dependencies to <code>app/build.gradle</code> and enable <code>kapt</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">...
+
+apply plugin: <span style="color:#e6db74">&#39;kotlin-kapt&#39;</span>
+
+android <span style="color:#f92672">{</span>
+    ...
+<span style="color:#f92672">}</span>
+
+dependencies <span style="color:#f92672">{</span>
+    ...
+    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android:2.x&#39;</span>
+    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-support:2.x&#39;</span>
+    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-processor:2.x&#39;</span>
+    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-compiler:2.x&#39;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="provide-modules-to-inject">Provide modules to inject</h2>
+<p>Organize your code in modules that provide dependencies. Activities and fragments are dependencies too. They need to be in special abstract modules that use <code>@ContributesAndroidInjector</code> annotation on methods.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActivityProvider</span> {
+    <span style="color:#a6e22e">@ContributesAndroidInjector</span>
+    <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">mainActivity</span>(): MainActivity
+}
+</code></pre></div><p>For other objects write modules with methods annotated with <code>@Provides</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeModule</span> {
+    <span style="color:#a6e22e">@Provides</span>
+    <span style="color:#a6e22e">@Singleton</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">coffeeService</span>() = CoffeeService()
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeService</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">prepareCoffee</span>() = <span style="color:#e6db74">&#34;Here! Espresso for you&#34;</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fetchCoffee</span>() = <span style="color:#e6db74">&#34;espresso&#34;</span>
+}
+</code></pre></div><p><code>OrderService</code> depends on <code>CoffeeService</code>. You don&rsquo;t need to use <code>@Inject</code> annotation to do this with Dagger.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderModule</span> {
+    <span style="color:#a6e22e">@Provides</span>
+    <span style="color:#a6e22e">@Singleton</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">orderService</span>(coffeeService: CoffeeService)
+     = OrderService(coffeeService)
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderService</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> coffeeService: CoffeeService) {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">askForOrder</span>() = <span style="color:#e6db74">&#34;Would you like some </span><span style="color:#e6db74">${coffeeService.fetchCoffee()}</span><span style="color:#e6db74">?&#34;</span>
+}
+</code></pre></div><h2 id="prepare-your-application">Prepare your Application</h2>
+<p>Next add <code>AppComponent</code> that extends <code>AndroidInjector&lt;DaggerApplication&gt;</code>. It is vital that one of the included modules is <code>AndroidSupportInjectionModule</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
+<span style="color:#a6e22e">@Component</span>(modules = [AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, ActivityProvider<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, CoffeeModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, OrderModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> : AndroidInjector&lt;DaggerApplication&gt;
+</code></pre></div><p>Add your own <code>DaggerApplication</code> implementation. This will be the starting point of your Android application.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InjectionExampleApplication</span> : DaggerApplication() {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">applicationInjector</span>(): AndroidInjector&lt;<span style="color:#66d9ef">out</span> DaggerApplication&gt; {
+        <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder()
+            .build()
+
+        appComponent.inject(<span style="color:#66d9ef">this</span>)
+
+        <span style="color:#66d9ef">return</span> appComponent
+    }
+}
+</code></pre></div><p>Don&rsquo;t forget to add attribute <code>android:name</code> in <code>AndroidManifest.xml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;manifest</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+          <span style="color:#a6e22e">package=</span><span style="color:#e6db74">&#34;com.github.wpanas.injectionexample&#34;</span><span style="color:#f92672">&gt;</span>
+
+    <span style="color:#f92672">&lt;application</span>
+        <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.InjectionExampleApplication&#34;</span>
+        <span style="color:#960050;background-color:#1e0010">...</span>
+    <span style="color:#f92672">&gt;</span>
+        ...
+    <span style="color:#f92672">&lt;/application&gt;</span>
+
+<span style="color:#f92672">&lt;/manifest&gt;</span>
+</code></pre></div><p>From now on, dependencies registered by modules in <code>AppComponent</code> will be available for injection.</p>
+<h2 id="inject-dependencies">Inject dependencies</h2>
+<p>The last step is injecting those dependencies into your activities. Change parent class of your <code>MainActivity</code> from <code>AppCompatActivity</code> to <code>DaggerAppCompatActivity</code>. Then add your dependencies as <code>lateinit var</code> properties with <code>@Inject</code> annotation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : DaggerAppCompatActivity() {
+
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> coffeeService: CoffeeService
+
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> orderService: OrderService
+
+    <span style="color:#f92672">..</span>.
+}
+</code></pre></div><p>The same you can do with all activities and fragments. Add prefix <code>Dagger-</code> to theirs parents class names. This will ensure that dependencies are injected. Don&rsquo;t forget to add those activities and fragments to module like in <code>ActivityProvider</code>.</p>
+<h2 id="summary">Summary</h2>
+<p>Those simple steps enables you to make Dagger 2 work with Kotlin. All this code is captured in this <a href="https://github.com/wpanas/InjectionExample">repository</a>. For more complex example you can also check out this <a href="https://github.com/wpanas/StateCounter">project</a> of mine.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+  
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+          <script type="text/javascript">
+          
+          (function() {
+              
+              
+              
+              
+          
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              var disqus_shortname = 'waldemar-panas-blog';
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+    </div>
+
+  
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
+         
+          <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-made-me-do-this-article">What made me do this article?</a></li>
+    <li><a href="#how-to-setup-dagger-2-with-kotlin">How to setup Dagger 2 with Kotlin?</a></li>
+    <li><a href="#provide-modules-to-inject">Provide modules to inject</a></li>
+    <li><a href="#prepare-your-application">Prepare your Application</a></li>
+    <li><a href="#inject-dependencies">Inject dependencies</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&text=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&is_video=false&description=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Using%20Dagger%202%20in%20Android%20with%20Kotlin&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&title=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&name=Using%20Dagger%202%20in%20Android%20with%20Kotlin&description=Quick%20guide%20how%20to%20configure%20Dagger%202%20with%20Kotlin" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fusing-dagger-2-in-android-with-kotlin%2f&t=Using%20Dagger%202%20in%20Android%20with%20Kotlin" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Waldemar Panas 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+<script src=/js/code-copy.js></script>
+
+
+
+</html>

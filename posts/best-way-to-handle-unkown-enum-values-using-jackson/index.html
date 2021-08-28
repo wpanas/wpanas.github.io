@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Best way to handle unknown enum values using Jackson | Waldemar Panas&#39; blog</title>
+  <link rel = 'canonical' href = 'https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/'>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Best way to handle unknown enum values using Jackson" />
+<meta property="og:description" content="In this article I want to show you how to handle enums using Jackson. It not as easy as it seems. Jackson can&rsquo;t handle unknown enum values by default. You have to decide, what to do. If you don&rsquo;t, your application will fail, when external resource changes and new enum value is added.
+How to handle unknown values? Since Jackson 2.0, you can use READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature. Still you will have to handle null, when unknown value appears in deserialized enum." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-16T00:00:00+00:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Best way to handle unknown enum values using Jackson"/>
+<meta name="twitter:description" content="In this article I want to show you how to handle enums using Jackson. It not as easy as it seems. Jackson can&rsquo;t handle unknown enum values by default. You have to decide, what to do. If you don&rsquo;t, your application will fail, when external resource changes and new enum value is added.
+How to handle unknown values? Since Jackson 2.0, you can use READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature. Still you will have to handle null, when unknown value appears in deserialized enum."/>
+
+  
+  
+    
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://blog.wpanas.eu/css/styles.8c2232bc6d6d80dfa85de52d09f338e16b3e3619a06ae32a1f3fd962c97f7ec3b78432bca07802d5563f48d33f0761c4f8bba9daf8130e400f5ac8679b973699.css" integrity="sha512-jCIyvG1tgN&#43;oXeUtCfM44Ws&#43;NhmgauMqHz/ZYsl/fsO3hDK8oHgC1VY/SNM/B2HE&#43;Lup2vgTDkAPWshnm5c2mQ=="> 
+
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://blog.wpanas.eu/images/favicon.ico" />
+
+  
+  
+  
+  
+  
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-111584148-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://blog.wpanas.eu/posts/best-ml-tutorials/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://blog.wpanas.eu/posts/leader-only-spring-boot-starter/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&text=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&is_video=false&description=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&name=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson&description=In%20this%20article%20I%20want%20to%20show%20you%20how%20to%20handle%20enums%20using%20Jackson.%20It%20not%20as%20easy%20as%20it%20seems.%20Jackson%20can%26rsquo%3bt%20handle%20unknown%20enum%20values%20by%20default.%20You%20have%20to%20decide%2c%20what%20to%20do.%20If%20you%20don%26rsquo%3bt%2c%20your%20application%20will%20fail%2c%20when%20external%20resource%20changes%20and%20new%20enum%20value%20is%20added.%0aHow%20to%20handle%20unknown%20values%3f%20Since%20Jackson%202.0%2c%20you%20can%20use%20READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature.%20Still%20you%20will%20have%20to%20handle%20null%2c%20when%20unknown%20value%20appears%20in%20deserialized%20enum." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&t=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-handle-unknown-values">How to handle unknown values?</a></li>
+    <li><a href="#how-to-handle-no-value-or-null">How to handle no value or null?</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Best way to handle unknown enum values using Jackson
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2021-01-16 00:00:00 &#43;0000 UTC" itemprop="datePublished">2021-01-16</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <p>In this article I want to show you how to handle
+enums using <a href="https://github.com/FasterXML/jackson">Jackson</a>. It not as easy as it seems.
+Jackson can&rsquo;t handle unknown enum values by default.
+You have to decide, what to do. If you don&rsquo;t, your application
+will fail, when external resource changes and new enum value is
+added.</p>
+<h2 id="how-to-handle-unknown-values">How to handle unknown values?</h2>
+<p>Since Jackson 2.0, you can use <!-- raw HTML omitted --><a href="http://fasterxml.github.io/jackson-databind/javadoc/2.12/com/fasterxml/jackson/databind/DeserializationFeature.html#READ_UNKNOWN_ENUM_VALUES_AS_NULL">READ_UNKNOWN_ENUM_VALUES_AS_NULL</a><!-- raw HTML omitted --> feature. Still you will have to handle <code>null</code>, when unknown value appears in deserialized enum.</p>
+<p>Since 2.8 there is a better way. Use <!-- raw HTML omitted --><a href="http://fasterxml.github.io/jackson-databind/javadoc/2.12/com/fasterxml/jackson/databind/DeserializationFeature.html#READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE">READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE</a><!-- raw HTML omitted -->.
+This feature allows you, to select a value that will be used by default. Let&rsquo;s see, how it will look.</p>
+<p>Provided examples are in <a href="https://kotlinlang.org/">Kotlin</a> and use <a href="https://github.com/FasterXML/jackson-module-kotlin">jackson-module-kotlin</a> 2.12+.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">enum</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> {
+    RED, GREEN, BLUE,
+    <span style="color:#a6e22e">@JsonEnumDefaultValue</span> UNKNOWN
+}
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(<span style="color:#66d9ef">val</span> color: Color)
+</code></pre></div><p>Don&rsquo;t forget to enable <!-- raw HTML omitted --><code>READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE</code><!-- raw HTML omitted -->,
+when configuring <code>ObjectMapper</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> objectMapper = jacksonMapperBuilder()
+    .enable(READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
+    .build()
+</code></pre></div><p>And that&rsquo;s how to handle enums to avoid dealing with errors when
+new enum values are extended.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">when</span> (objectMapper.readValue&lt;Pixel&gt;(jsonString).color) {
+    Color.RED <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle red&#34;</span>)
+    Color.GREEN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle green&#34;</span>)
+    Color.BLUE <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle blue&#34;</span>)
+    Color.UNKNOWN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle unknown&#34;</span>)
+}
+</code></pre></div><h2 id="how-to-handle-no-value-or-null">How to handle no value or null?</h2>
+<p>I showed you, how to handle unknown values. This doesn&rsquo;t solve handling JSON with no <code>color</code> property or <code>color</code> set to <code>null</code>.
+Using Kotlin we can set <code>color</code> property to be nullable, but there is a better way.
+All you need to do is to use default value.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(<span style="color:#a6e22e">@JsonSetter</span>(nulls = Nulls.AS_EMPTY) <span style="color:#66d9ef">val</span> color: Color = Color.UNKNOWN)
+</code></pre></div><p><a href="https://fasterxml.github.io/jackson-annotations/javadoc/2.12/com/fasterxml/jackson/annotation/JsonSetter.html">@JsonSetter</a> is set up to handle <code>null</code> as empty value. This way
+when <code>color</code> property is unset, then default <code>Color.UNKNOWN</code> is used.</p>
+<p>You can see full example <a href="https://github.com/wpanas/jackson-default-enum">here</a>.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+  
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+          <script type="text/javascript">
+          
+          (function() {
+              
+              
+              
+              
+          
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              var disqus_shortname = 'waldemar-panas-blog';
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+    </div>
+
+  
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
+         
+          <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-handle-unknown-values">How to handle unknown values?</a></li>
+    <li><a href="#how-to-handle-no-value-or-null">How to handle no value or null?</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&text=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&is_video=false&description=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson&body=Check out this article: https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&title=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&name=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson&description=In%20this%20article%20I%20want%20to%20show%20you%20how%20to%20handle%20enums%20using%20Jackson.%20It%20not%20as%20easy%20as%20it%20seems.%20Jackson%20can%26rsquo%3bt%20handle%20unknown%20enum%20values%20by%20default.%20You%20have%20to%20decide%2c%20what%20to%20do.%20If%20you%20don%26rsquo%3bt%2c%20your%20application%20will%20fail%2c%20when%20external%20resource%20changes%20and%20new%20enum%20value%20is%20added.%0aHow%20to%20handle%20unknown%20values%3f%20Since%20Jackson%202.0%2c%20you%20can%20use%20READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature.%20Still%20you%20will%20have%20to%20handle%20null%2c%20when%20unknown%20value%20appears%20in%20deserialized%20enum." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fblog.wpanas.eu%2fposts%2fbest-way-to-handle-unkown-enum-values-using-jackson%2f&t=Best%20way%20to%20handle%20unknown%20enum%20values%20using%20Jackson" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Waldemar Panas 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+         
+        <li><a href="https://github.com/wpanas/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+<script src=/js/code-copy.js></script>
+
+
+
+</html>
