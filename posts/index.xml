@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Waldemar Panas</copyright>
-    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.wpanas.eu/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.wpanas.eu/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BlockHound can save you from waking up at midnight</title>
+      <link>https://blog.wpanas.eu/posts/blockhound-can-save-you-from-waking-up-at-midnight/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/blockhound-can-save-you-from-waking-up-at-midnight/</guid>
+      <description>BlockHound detects problems that will take down your reactive applications It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&amp;rsquo;s simple to make that error. All you have to do is use a blocking operation, and everything falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency.</description>
+    </item>
+    
     <item>
       <title>How to migrate MongoDB</title>
       <link>https://blog.wpanas.eu/posts/how-to-migrate-mongodb/</link>
