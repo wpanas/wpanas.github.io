@@ -224,7 +224,7 @@ falls apart like a house of cards. It can disguise itself as an undocumented met
 <p><a href="https://github.com/reactor/BlockHound">BlockHound</a> can save you, so use it. All you need to do is to
 add it to your tests suite. Just like that.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SuperImportantServiceTest</span> {
-    <span style="color:#a6e22e">@BeforeAll</span>
+    <span style="color:#a6e22e">@BeforAll</span>
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setupAll</span>() {
         BlockHound.install();
     }
