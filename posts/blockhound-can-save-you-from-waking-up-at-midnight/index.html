@@ -14,7 +14,7 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:title" content="BlockHound can save you from waking up at midnight" />
-<meta property="og:description" content="BlockHound detects problems that will take down your reactive applications It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&rsquo;s simple to make that error. All you have to do is use a blocking operation, and everything falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency." />
+<meta property="og:description" content="BlockHound detects problems that take down your reactive applications It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&rsquo;s simple to make that error. All you have to do is use a blocking operation, and everything falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.wpanas.eu/posts/blockhound-can-save-you-from-waking-up-at-midnight/" /><meta property="og:image" content="https://blog.wpanas.eu/posts/blockhound-can-save-you-from-waking-up-at-midnight/post-cover.jpg"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-29T00:00:00+00:00" />
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://blog.wpanas.eu/posts/blockhound-can-save-you-from-waking-up-at-midnight/post-cover.jpg"/>
 <meta name="twitter:title" content="BlockHound can save you from waking up at midnight"/>
-<meta name="twitter:description" content="BlockHound detects problems that will take down your reactive applications It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&rsquo;s simple to make that error. All you have to do is use a blocking operation, and everything falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency."/>
+<meta name="twitter:description" content="BlockHound detects problems that take down your reactive applications It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&rsquo;s simple to make that error. All you have to do is use a blocking operation, and everything falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency."/>
 
   
   
@@ -159,7 +159,7 @@ if (!doNotTrack) {
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fblockhound-can-save-you-from-waking-up-at-midnight%2f&name=BlockHound%20can%20save%20you%20from%20waking%20up%20at%20midnight&description=BlockHound%20detects%20problems%20that%20will%20take%20down%20your%20reactive%20applications%20It%20might%20not%20be%20that%20self-evident%2c%20but%20your%20non-blocking%20reactive%20application%20can%20block%20and%20eventually%20run%20out%20of%20computing%20power.%20It%26rsquo%3bs%20simple%20to%20make%20that%20error.%20All%20you%20have%20to%20do%20is%20use%20a%20blocking%20operation%2c%20and%20everything%20falls%20apart%20like%20a%20house%20of%20cards.%20It%20can%20disguise%20itself%20as%20an%20undocumented%20method%20with%20an%20unintended%20side-effect%20or%20a%20misused%20dependency." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fblockhound-can-save-you-from-waking-up-at-midnight%2f&name=BlockHound%20can%20save%20you%20from%20waking%20up%20at%20midnight&description=BlockHound%20detects%20problems%20that%20take%20down%20your%20reactive%20applications%20It%20might%20not%20be%20that%20self-evident%2c%20but%20your%20non-blocking%20reactive%20application%20can%20block%20and%20eventually%20run%20out%20of%20computing%20power.%20It%26rsquo%3bs%20simple%20to%20make%20that%20error.%20All%20you%20have%20to%20do%20is%20use%20a%20blocking%20operation%2c%20and%20everything%20falls%20apart%20like%20a%20house%20of%20cards.%20It%20can%20disguise%20itself%20as%20an%20undocumented%20method%20with%20an%20unintended%20side-effect%20or%20a%20misused%20dependency." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -175,7 +175,7 @@ if (!doNotTrack) {
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#blockhound-detects-problems-that-will-take-down-your-reactive-applications">BlockHound detects problems that will take down your reactive applications</a></li>
+    <li><a href="#blockhound-detects-problems-that-take-down-your-reactive-applications">BlockHound detects problems that take down your reactive applications</a></li>
     <li><a href="#blockhound-works-with-project-reactor--kotlin-coroutines">BlockHound works with Project Reactor &amp; Kotlin coroutines</a></li>
     <li><a href="#together-with-testcontainers-can-even-detect-problems-with-your-external-dependencies">Together with Testcontainers can even detect problems with your external dependencies</a></li>
     <li><a href="#summary">Summary</a></li>
@@ -217,35 +217,34 @@ if (!doNotTrack) {
   
     
     <div class="content" itemprop="articleBody">
-      <h2 id="blockhound-detects-problems-that-will-take-down-your-reactive-applications">BlockHound detects problems that will take down your reactive applications</h2>
+      <h2 id="blockhound-detects-problems-that-take-down-your-reactive-applications">BlockHound detects problems that take down your reactive applications</h2>
 <p>It might not be that self-evident, but your non-blocking reactive application can block and eventually run out of computing power. It&rsquo;s simple to make that error.
 All you have to do is use a blocking operation, and everything
 falls apart like a house of cards. It can disguise itself as an undocumented method with an unintended side-effect or a misused dependency.</p>
 <p><a href="https://github.com/reactor/BlockHound">BlockHound</a> can save you, so use it. All you need to do is to
 add it to your tests suite. Just like that.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SuperImportantServiceTest</span> {
-    <span style="color:#a6e22e">@BeforAll</span>
+    <span style="color:#a6e22e">@BeforeAll</span>
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setupAll</span>() {
         BlockHound.install();
     }
 
     <span style="color:#f92672">..</span>.
 }
-</code></pre></div><p>For more information on adding dependency to your project,
+</code></pre></div><p>For more information on adding a dependency to your project,
 you can check an <a href="https://github.com/reactor/BlockHound#getting-it">official getting starter guide</a>.</p>
 <h2 id="blockhound-works-with-project-reactor--kotlin-coroutines">BlockHound works with Project Reactor &amp; Kotlin coroutines</h2>
 <p>BlockHound is a tool created by <a href="https://projectreactor.io/">Project Reactor&rsquo;s</a> team, but you can use it with many
 different technologies. Here you can see examples of using BlockHound with <a href="https://github.com/reactor/BlockHound/blob/master/example/src/test/java/com/example/ReactorTest.java">Reactor</a> &amp; <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-debug/test/BlockHoundTest.kt">Kotlin coroutines</a>.
-It supports <a href="https://github.com/reactor/BlockHound/blob/master/docs/custom_integrations.md">the JVM&rsquo;s SPI mechanism</a> to be easily integrated with any technology.</p>
+It supports <a href="https://github.com/reactor/BlockHound/blob/master/docs/custom_integrations.md">the JVM&rsquo;s SPI mechanism</a> for easy integration with any technology.</p>
 <p>Sadly, RxJava 3 is <a href="https://github.com/ReactiveX/RxJava/pull/6692">unsupported</a> at the moment. BlockHound still supports <a href="https://github.com/reactor/BlockHound/blob/master/example/src/test/java/com/example/RxJavaTest.java">RxJava 2</a>.</p>
 <p>Nonetheless, BlockHound&rsquo;s versatile, and there is no reason you can&rsquo;t use it right now.
 Unless you use RxJava 3 😉</p>
 <h2 id="together-with-testcontainers-can-even-detect-problems-with-your-external-dependencies">Together with Testcontainers can even detect problems with your external dependencies</h2>
 <p>Some blocking operations might hide inside dependencies that you use.
-Let&rsquo;s say that you use blocking MongoDB operations by mistake. If you only mock operations on a database, then BlockHound will not help you.</p>
-<p>Use <a href="https://www.testcontainers.org/">Testcontainers</a> to solve this problem. It&rsquo;s a tool that will help you
-spawn containers with dependencies during running tests. In doing so, you connect to an authentic MongoDB instance just for your tests.
-BlockHound will instantly catch that you use blocking API and warn you about it.</p>
+Let&rsquo;s say that you use blocking MongoDB operations by mistake. If you only mock operations on a database, then BlockHound won&rsquo;t help you.</p>
+<p>Use <a href="https://www.testcontainers.org/">Testcontainers</a> to solve this problem. It&rsquo;s a tool that spawns containers with dependencies during running tests. In doing so, you connect to an authentic MongoDB instance just for your tests.
+BlockHound instantly catches that you use blocking API and warns you about it.</p>
 <h2 id="summary">Summary</h2>
 <p>Putting it all together, go and use <a href="https://github.com/reactor/BlockHound">BlockHound</a> immediately. It&rsquo;s an essential tool for every software developer that creates reactive applications.</p>
 <p>BlockHound is:</p>
@@ -308,7 +307,7 @@ BlockHound will instantly catch that you use blocking API and warn you about it.
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#blockhound-detects-problems-that-will-take-down-your-reactive-applications">BlockHound detects problems that will take down your reactive applications</a></li>
+    <li><a href="#blockhound-detects-problems-that-take-down-your-reactive-applications">BlockHound detects problems that take down your reactive applications</a></li>
     <li><a href="#blockhound-works-with-project-reactor--kotlin-coroutines">BlockHound works with Project Reactor &amp; Kotlin coroutines</a></li>
     <li><a href="#together-with-testcontainers-can-even-detect-problems-with-your-external-dependencies">Together with Testcontainers can even detect problems with your external dependencies</a></li>
     <li><a href="#summary">Summary</a></li>
@@ -361,7 +360,7 @@ BlockHound will instantly catch that you use blocking API and warn you about it.
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fblockhound-can-save-you-from-waking-up-at-midnight%2f&name=BlockHound%20can%20save%20you%20from%20waking%20up%20at%20midnight&description=BlockHound%20detects%20problems%20that%20will%20take%20down%20your%20reactive%20applications%20It%20might%20not%20be%20that%20self-evident%2c%20but%20your%20non-blocking%20reactive%20application%20can%20block%20and%20eventually%20run%20out%20of%20computing%20power.%20It%26rsquo%3bs%20simple%20to%20make%20that%20error.%20All%20you%20have%20to%20do%20is%20use%20a%20blocking%20operation%2c%20and%20everything%20falls%20apart%20like%20a%20house%20of%20cards.%20It%20can%20disguise%20itself%20as%20an%20undocumented%20method%20with%20an%20unintended%20side-effect%20or%20a%20misused%20dependency." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fblog.wpanas.eu%2fposts%2fblockhound-can-save-you-from-waking-up-at-midnight%2f&name=BlockHound%20can%20save%20you%20from%20waking%20up%20at%20midnight&description=BlockHound%20detects%20problems%20that%20take%20down%20your%20reactive%20applications%20It%20might%20not%20be%20that%20self-evident%2c%20but%20your%20non-blocking%20reactive%20application%20can%20block%20and%20eventually%20run%20out%20of%20computing%20power.%20It%26rsquo%3bs%20simple%20to%20make%20that%20error.%20All%20you%20have%20to%20do%20is%20use%20a%20blocking%20operation%2c%20and%20everything%20falls%20apart%20like%20a%20house%20of%20cards.%20It%20can%20disguise%20itself%20as%20an%20undocumented%20method%20with%20an%20unintended%20side-effect%20or%20a%20misused%20dependency." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
