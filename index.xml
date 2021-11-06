@@ -39,13 +39,13 @@ Usage First of all you need to add dependency to your project.</description>
     </item>
     
     <item>
-      <title>Best way to handle unknown enum values using Jackson</title>
+      <title>The best way to handle unknown enum values using Jackson</title>
       <link>https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/</link>
       <pubDate>Sat, 16 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>https://blog.wpanas.eu/posts/best-way-to-handle-unkown-enum-values-using-jackson/</guid>
-      <description>In this article I want to show you how to handle enums using Jackson. It not as easy as it seems. Jackson can&amp;rsquo;t handle unknown enum values by default. You have to decide, what to do. If you don&amp;rsquo;t, your application will fail, when external resource changes and new enum value is added.
-How to handle unknown values? Since Jackson 2.0, you can use READ_UNKNOWN_ENUM_VALUES_AS_NULLfeature. Still you will have to handle null, when unknown value appears in deserialized enum.</description>
+      <description>In this article, I want to show you how to handle enums using Jackson. It is not as easy as it seems. Jackson can&amp;rsquo;t deserialize unknown enum values by default. You have to decide what to do. If you don&amp;rsquo;t, your application will fail the moment external resource changes and an enum&amp;rsquo;s values extend.
+How to handle unknown values? Since Jackson 2.0, you can use READ_UNKNOWN_ENUM_VALUES_AS_NULL feature. Still, you will have to handle null when an unknown value appears in deserialized enum.</description>
     </item>
     
     <item>
