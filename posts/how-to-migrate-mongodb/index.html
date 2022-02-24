@@ -55,18 +55,17 @@ How to do it in most efficient fashion? Let&rsquo;s say you have tens of million
   
   
     
-<script type="application/javascript">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HNT2RP39GX"></script>
+<script>
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-111584148-1', 'auto');
-	
-	ga('send', 'pageview');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-HNT2RP39GX', { 'anonymize_ip': false });
 }
 </script>
+
   
   
 </head>
@@ -292,8 +291,8 @@ is what we need in them.</p>
             <span style="color:#f92672">&#34;number&#34;</span>: <span style="color:#e6db74">&#34;DE05842479609094250496642135&#34;</span>
         }
     ],
-    <span style="color:#f92672">&#34;schemaVersion&#34;</span>: <span style="color:#ae81ff">2</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">constant</span> <span style="color:#960050;background-color:#1e0010">value</span> <span style="color:#960050;background-color:#1e0010">for</span> <span style="color:#960050;background-color:#1e0010">all</span> <span style="color:#960050;background-color:#1e0010">new</span> <span style="color:#960050;background-color:#1e0010">documents</span>
-}
+    <span style="color:#f92672">&#34;schemaVersion&#34;</span>: <span style="color:#ae81ff">2</span> <span style="color:#75715e">// the constant value for all new documents
+</span><span style="color:#75715e"></span>}
 </code></pre></div><p>Then you can migrate old documents in two ways. Perfectly, you
 can do both at the same time.</p>
 <h2 id="how-to-migrate-documents-on-the-fly">How to migrate documents on the fly?</h2>
@@ -449,7 +448,7 @@ sure that all documents are migrated.</p>
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2021  Waldemar Panas 
+    Copyright  &copy; 2022  Waldemar Panas 
   </div>
   <div class="footer-right">
     <nav>
