@@ -217,84 +217,84 @@ if (!doNotTrack) {
 <p><a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> is a search and analitycs engine. It allows you to store data and search through it with ease, but it is not a database engine per se. It doesn&rsquo;t guaranties <a href="https://en.wikipedia.org/wiki/ACID">ACID</a>. Elasticsearch stores data in the index. It is special construction that fastens search queries, but it is vulnerable for corruption. It&rsquo;s not a problem since all your data should be stored in proper database engine like <a href="https://www.mysql.com/">MySQL</a> or <a href="https://www.mongodb.com/">MongoDB</a>, so index can be rebuilt from it.</p>
 <h2 id="incompatible-type">Incompatible type</h2>
 <p>Elasticsearch is RESTful and uses JSON to transfer data. It uses <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html">dynamic field mapping</a> to distinguish types of fields. Let&rsquo;s check an example of JSON, which causes an incompatible type error.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;positions&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Apple&#34;</span>,
-            <span style="color:#f92672">&#34;quantity&#34;</span>: <span style="color:#ae81ff">2</span>,
-            <span style="color:#f92672">&#34;unit&#34;</span>: <span style="color:#e6db74">&#34;pcs&#34;</span>
-        },
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Water&#34;</span>,
-            <span style="color:#f92672">&#34;quantity&#34;</span>: <span style="color:#ae81ff">1.25</span>,
-            <span style="color:#f92672">&#34;unit&#34;</span>: <span style="color:#e6db74">&#34;litre&#34;</span>
-        }
-    ]
-}
-</code></pre></div><p>The problem is with field quantity. If Elasticsearch recognizes field as Long and then the same field has fraction then error occures, cause you can&rsquo;t store Double as Long. This problem also happens when Double is recongized first and then came Long.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;positions&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Apple&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;quantity&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;unit&#34;</span>: <span style="color:#e6db74">&#34;pcs&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Water&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;quantity&#34;</span>: <span style="color:#ae81ff">1.25</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;unit&#34;</span>: <span style="color:#e6db74">&#34;litre&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The problem is with field quantity. If Elasticsearch recognizes field as Long and then the same field has fraction then error occures, cause you can&rsquo;t store Double as Long. This problem also happens when Double is recongized first and then came Long.</p>
 <p>There is a quite simple solution for this problem. We need to <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#_explicit_mappings">define types</a> on our own. To demonstrate it, I will assemble small project using <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/">Spring Data Elasticsearch</a>.</p>
 <h2 id="project">Project</h2>
 <p>Foremost, I go to <a href="https://start.spring.io/">Spring Initializr</a>. I selected: Elasticsearch, DevTools and <a href="https://projectlombok.org/features/all">Lombok</a>.
 All we really need is Elasticsearch, but DevTools and Lombok does our work easier.
 To bootstrap our project, we need Elasticsearch engine running. Luckily, it is already build-in feature in our project. First we need to add following annotation to main class.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@EnableElasticsearchRepositories</span><span style="color:#f92672">(</span>basePackages <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.github.wpanas.elasticsearchdemo.repository&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><p>The last thing we are missing is <code>ElasticsearchTemplate</code> class. Below is a bean that creates its local instance.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Bean</span>
-<span style="color:#66d9ef">public</span> ElasticsearchOperations <span style="color:#a6e22e">elasticsearchTemplate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ElasticsearchTemplate<span style="color:#f92672">(</span>nodeBuilder<span style="color:#f92672">().</span><span style="color:#a6e22e">local</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">).</span><span style="color:#a6e22e">node</span><span style="color:#f92672">().</span><span style="color:#a6e22e">client</span><span style="color:#f92672">());</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>This configuration launches a local Elasticsearch instance everytime we run our project that stores indexes in the folder <code>data</code> in the project root. Now let&rsquo;s create documents that we will use to demonstrate the previously described problem. First we make documents that causes an error.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invoice&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Invoice</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Id</span>
-    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String number<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> LocalDate saleDate<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> Set<span style="color:#f92672">&lt;</span>InvoicePosition<span style="color:#f92672">&gt;</span> invoicePositions<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invoice-positions&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvoicePosition</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Id</span>
-    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> BigDecimal price<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> BigDecimal quantity<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String unit<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>We can solve an invalid type recognition by usage of the annotation <code>@Field</code>. Below I present you fixed documents.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proper-invoice&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProperInvoice</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Id</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String number<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Object</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> LocalDate saleDate<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Nested</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> Set<span style="color:#f92672">&lt;</span>ProperInvoicePosition<span style="color:#f92672">&gt;</span> invoicePositions<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proper-invoice-positions&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProperInvoicePosition</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Id</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> BigDecimal price<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> BigDecimal quantity<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String unit<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>The most important changes are:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@EnableElasticsearchRepositories</span><span style="color:#f92672">(</span>basePackages <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.github.wpanas.elasticsearchdemo.repository&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>The last thing we are missing is <code>ElasticsearchTemplate</code> class. Below is a bean that creates its local instance.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> ElasticsearchOperations <span style="color:#a6e22e">elasticsearchTemplate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ElasticsearchTemplate<span style="color:#f92672">(</span>nodeBuilder<span style="color:#f92672">().</span><span style="color:#a6e22e">local</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">).</span><span style="color:#a6e22e">node</span><span style="color:#f92672">().</span><span style="color:#a6e22e">client</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>This configuration launches a local Elasticsearch instance everytime we run our project that stores indexes in the folder <code>data</code> in the project root. Now let&rsquo;s create documents that we will use to demonstrate the previously described problem. First we make documents that causes an error.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invoice&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Invoice</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Id</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String number<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LocalDate saleDate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Set<span style="color:#f92672">&lt;</span>InvoicePosition<span style="color:#f92672">&gt;</span> invoicePositions<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;invoice-positions&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InvoicePosition</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Id</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BigDecimal price<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BigDecimal quantity<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String unit<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>We can solve an invalid type recognition by usage of the annotation <code>@Field</code>. Below I present you fixed documents.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proper-invoice&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProperInvoice</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Id</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String number<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Object</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> LocalDate saleDate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Nested</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Set<span style="color:#f92672">&lt;</span>ProperInvoicePosition<span style="color:#f92672">&gt;</span> invoicePositions<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proper-invoice-positions&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProperInvoicePosition</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Id</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String id<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BigDecimal price<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> BigDecimal quantity<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String unit<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>The most important changes are:</p>
 <ul>
 <li>the annotation <code>@Field(type = FieldType.Nested)</code> by property <code>invoicePostions</code> in class <code>PorperInvoice</code></li>
 <li>annotations <code>@Field(type = FieldType.Double)</code> in class <code>ProperInvoicePositions</code>.</li>
@@ -303,9 +303,9 @@ To bootstrap our project, we need Elasticsearch engine running. Luckily, it is a
 <p><code>@Field(type = FieldType.String)</code> is not necessary in this example, but I included it to show, how to use this annotation.</p>
 <p>You might notice that I used <code>@Field(type = FieldType.Object)</code> with property <code>saleDate</code> that is type <code>LocalDate</code>. Of course, I could use <code>FieldType.Date</code>, but it doesn&rsquo;t works out of the box and for an explanation for this problem, I will make an another article.</p>
 <p>We defined types by ourself, but Elasticsearch doesn&rsquo;t know about it. To create indexes with our types we need to do one more action.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">elasticsearchTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">createIndex</span><span style="color:#f92672">(</span>ProperInvoice<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-elasticsearchTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">createIndex</span><span style="color:#f92672">(</span>ProperInvoicePosition<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</code></pre></div><h2 id="summary">Summary</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>elasticsearchTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">createIndex</span><span style="color:#f92672">(</span>ProperInvoice<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>elasticsearchTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">createIndex</span><span style="color:#f92672">(</span>ProperInvoicePosition<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span></code></pre></div><h2 id="summary">Summary</h2>
 <p>Elasticsearch is a great tool to accelerate search queries in your application. It uses the dynamic type recognition, and it might be a problem with numbers. To avoid this problem, we can define types ourself. This can be achieved by a usage of annotation <code>@Field</code> and creating index before first call to Elasticsearch.</p>
 <p>The project that I created for this article is available on <a href="https://github.com/wpanas/code-snippets/tree/master/elasticsearch-demo">GitHub</a>.
 Check it out and launch tests to find out how it works.</p>

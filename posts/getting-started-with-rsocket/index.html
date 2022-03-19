@@ -242,67 +242,67 @@ A server can also start a communication on an established channel with a client.
 <p>RSocket server is the easiest part of the whole project. All you need to do is to go to <a href="https://start.spring.io">Spring Initializr</a> and select Spring Boot, at least version 2.2.0.M4.
 Then, select RSocket as a dependency.</p>
 <p>To configure RSocket server with TCP protocol, add following lines to <code>application.yaml</code>. This configuration will open RSocket at port 7000.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spring</span>:
-    <span style="color:#f92672">rsocket</span>:
-        <span style="color:#f92672">server</span>:
-            <span style="color:#f92672">transport</span>: <span style="color:#ae81ff">tcp</span>
-            <span style="color:#f92672">port</span>: <span style="color:#ae81ff">7000</span>
-</code></pre></div><p>Last step required is to add some controllers and you are ready with the server. You can try something like that:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Controller</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ServerController</span> {
-    <span style="color:#a6e22e">@MessageMapping</span>(<span style="color:#e6db74">&#34;queue&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">helloQueue</span>(incomingMessage: Message): Mono&lt;Message&gt; 
-        = Mono.just(Message(<span style="color:#e6db74">&#34;Hello </span><span style="color:#e6db74">${incomingMessage.message}</span><span style="color:#e6db74">&#34;</span>))
-}
-
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Message</span>(<span style="color:#66d9ef">val</span> message: String)
-</code></pre></div><h2 id="rsocket-tcp-client">RSocket TCP Client</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rsocket</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">transport</span>: <span style="color:#ae81ff">tcp</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>: <span style="color:#ae81ff">7000</span>
+</span></span></code></pre></div><p>Last step required is to add some controllers and you are ready with the server. You can try something like that:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ServerController</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@MessageMapping</span>(<span style="color:#e6db74">&#34;queue&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">helloQueue</span>(incomingMessage: Message): Mono&lt;Message&gt; 
+</span></span><span style="display:flex;"><span>        = Mono.just(Message(<span style="color:#e6db74">&#34;Hello </span><span style="color:#e6db74">${incomingMessage.message}</span><span style="color:#e6db74">&#34;</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Message</span>(<span style="color:#66d9ef">val</span> message: String)
+</span></span></code></pre></div><h2 id="rsocket-tcp-client">RSocket TCP Client</h2>
 <p>Client application is very similar. Go to <a href="https://start.spring.io">Spring Initializr</a> and bootstrap it with <code>RSocket</code> and <code>Spring Reactive Web</code>.</p>
 <p>To communicate with RSocket over a TCP port <code>7000</code>, you need to create a <code>RSocketRequester</code>. For the TCP protocol it can look like this.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientConfiguration</span> {
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">rSocketRequester</span>(rSocketStrategies: RSocketStrategies): RSocketRequester 
-        = RSocketRequester.builder()
-            .rsocketStrategies(rSocketStrategies)
-            .connect(TcpClientTransport.create(<span style="color:#ae81ff">7000</span>))
-            .block()<span style="color:#f92672">!!</span>
-}
-</code></pre></div><p>Your client application can be a standard reactive web application that uses HTTP. To test communication with configured server add a following endpoint.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RestController</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientController</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> rSocketRequester: RSocketRequester) {
-    <span style="color:#a6e22e">@GetMapping</span>(<span style="color:#e6db74">&#34;/hello/{name}&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>(<span style="color:#a6e22e">@PathVariable</span>(<span style="color:#e6db74">&#34;name&#34;</span>) name: String): Mono&lt;String&gt; = rSocketRequester.route(<span style="color:#e6db74">&#34;queue&#34;</span>)
-        .<span style="color:#66d9ef">data</span>(Message(name))
-        .retrieveMono(Message<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-        .map { <span style="color:#66d9ef">it</span>.message }
-}
-
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Message</span>(<span style="color:#66d9ef">val</span> message: String)
-</code></pre></div><h2 id="rsocket-websocket-server">RSocket WebSocket server</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientConfiguration</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">rSocketRequester</span>(rSocketStrategies: RSocketStrategies): RSocketRequester 
+</span></span><span style="display:flex;"><span>        = RSocketRequester.builder()
+</span></span><span style="display:flex;"><span>            .rsocketStrategies(rSocketStrategies)
+</span></span><span style="display:flex;"><span>            .connect(TcpClientTransport.create(<span style="color:#ae81ff">7000</span>))
+</span></span><span style="display:flex;"><span>            .block()<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Your client application can be a standard reactive web application that uses HTTP. To test communication with configured server add a following endpoint.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientController</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> rSocketRequester: RSocketRequester) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@GetMapping</span>(<span style="color:#e6db74">&#34;/hello/{name}&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>(<span style="color:#a6e22e">@PathVariable</span>(<span style="color:#e6db74">&#34;name&#34;</span>) name: String): Mono&lt;String&gt; = rSocketRequester.route(<span style="color:#e6db74">&#34;queue&#34;</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">data</span>(Message(name))
+</span></span><span style="display:flex;"><span>        .retrieveMono(Message<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>        .map { <span style="color:#66d9ef">it</span>.message }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Message</span>(<span style="color:#66d9ef">val</span> message: String)
+</span></span></code></pre></div><h2 id="rsocket-websocket-server">RSocket WebSocket server</h2>
 <p>WebSocket requires you to add <code>Spring Reactive Web</code> dependency to server application. RSocket port will be the same as Web application port. Instead configuring port, you need to define mapping for RSocket endpoint. In this example, you will use <code>/rsocket</code> path. Configure following properties in <code>application.yaml</code> file.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spring</span>:
-    <span style="color:#f92672">rsocket</span>:
-        <span style="color:#f92672">server</span>:
-            <span style="color:#f92672">transport</span>: <span style="color:#ae81ff">websocket</span>
-            <span style="color:#f92672">mapping-path</span>: <span style="color:#ae81ff">/rsocket</span>
-</code></pre></div><p>Controllers that you created for TCP server don&rsquo;t need to change.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rsocket</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">transport</span>: <span style="color:#ae81ff">websocket</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">mapping-path</span>: <span style="color:#ae81ff">/rsocket</span>
+</span></span></code></pre></div><p>Controllers that you created for TCP server don&rsquo;t need to change.</p>
 <h2 id="rsocket-websocket-client">RSocket WebSocket client</h2>
 <p>Your server might be already started at port <code>8080</code>. Change client port to another in <code>application.yaml</code>, i.e. <code>8081</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server.port</span>: <span style="color:#ae81ff">8081</span>
-</code></pre></div><p>Configuration for client with WebSocket transport protocol is like previous one. All you need to do is provide <code>ClientTransport</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientConfiguration</span> {
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">rSocketRequester</span>(rSocketStrategies: RSocketStrategies): RSocketRequester {
-        <span style="color:#66d9ef">val</span> uri = URI.create(<span style="color:#e6db74">&#34;ws://localhost:8080/rsocket&#34;</span>)
-        <span style="color:#66d9ef">return</span> RSocketRequester.builder()
-            .rsocketStrategies(rSocketStrategies)
-            .connect(WebsocketClientTransport.create(uri))
-            .block()<span style="color:#f92672">!!</span>
-    }
-}
-</code></pre></div><p>Controllers that you created for TCP client don&rsquo;t need to change.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">server.port</span>: <span style="color:#ae81ff">8081</span>
+</span></span></code></pre></div><p>Configuration for client with WebSocket transport protocol is like previous one. All you need to do is provide <code>ClientTransport</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClientConfiguration</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">rSocketRequester</span>(rSocketStrategies: RSocketStrategies): RSocketRequester {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> uri = URI.create(<span style="color:#e6db74">&#34;ws://localhost:8080/rsocket&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> RSocketRequester.builder()
+</span></span><span style="display:flex;"><span>            .rsocketStrategies(rSocketStrategies)
+</span></span><span style="display:flex;"><span>            .connect(WebsocketClientTransport.create(uri))
+</span></span><span style="display:flex;"><span>            .block()<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Controllers that you created for TCP client don&rsquo;t need to change.</p>
 <h2 id="summary">Summary</h2>
 <p>Spring Boot made it simple to create application that use RSocket.
 I hope that those examples show you how to do it.

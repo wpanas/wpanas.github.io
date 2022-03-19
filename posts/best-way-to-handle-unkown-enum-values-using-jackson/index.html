@@ -223,35 +223,35 @@ will fail the moment external resource changes and an enum&rsquo;s values extend
 <p>Since 2.8, there is a better way &ndash; <a href="http://fasterxml.github.io/jackson-databind/javadoc/2.12/com/fasterxml/jackson/databind/DeserializationFeature.html#READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE">READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE</a>.
 Thanks to this feature, you can select a default value instead <code>null</code> value. Let&rsquo;s see how it will look.</p>
 <p>Provided examples are in <a href="https://kotlinlang.org/">Kotlin</a> and use <a href="https://github.com/FasterXML/jackson-module-kotlin">jackson-module-kotlin</a> 2.12+.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">enum</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> {
-    RED, GREEN, BLUE,
-    <span style="color:#a6e22e">@JsonEnumDefaultValue</span> UNKNOWN
-}
-
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(<span style="color:#66d9ef">val</span> color: Color)
-</code></pre></div><p>Don&rsquo;t forget to enable <!-- raw HTML omitted --><code>READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE</code><!-- raw HTML omitted -->,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> {
+</span></span><span style="display:flex;"><span>    RED, GREEN, BLUE,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@JsonEnumDefaultValue</span> UNKNOWN
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(<span style="color:#66d9ef">val</span> color: Color)
+</span></span></code></pre></div><p>Don&rsquo;t forget to enable <!-- raw HTML omitted --><code>READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE</code><!-- raw HTML omitted -->,
 when configuring <code>ObjectMapper</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> objectMapper = jacksonMapperBuilder()
-    .enable(READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
-    .build()
-</code></pre></div><p>That&rsquo;s the way to handle enums to avoid dealing with errors when
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> objectMapper = jacksonMapperBuilder()
+</span></span><span style="display:flex;"><span>    .enable(READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
+</span></span><span style="display:flex;"><span>    .build()
+</span></span></code></pre></div><p>That&rsquo;s the way to handle enums to avoid dealing with errors when
 enum values extend.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">when</span> (objectMapper.readValue&lt;Pixel&gt;(jsonString).color) {
-    Color.RED <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle red&#34;</span>)
-    Color.GREEN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle green&#34;</span>)
-    Color.BLUE <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle blue&#34;</span>)
-    Color.UNKNOWN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle unknown&#34;</span>)
-}
-</code></pre></div><h2 id="how-to-handle-no-value-or-null">How to handle no value or null?</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">when</span> (objectMapper.readValue&lt;Pixel&gt;(jsonString).color) {
+</span></span><span style="display:flex;"><span>    Color.RED <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle red&#34;</span>)
+</span></span><span style="display:flex;"><span>    Color.GREEN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle green&#34;</span>)
+</span></span><span style="display:flex;"><span>    Color.BLUE <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle blue&#34;</span>)
+</span></span><span style="display:flex;"><span>    Color.UNKNOWN <span style="color:#f92672">-&gt;</span> print(<span style="color:#e6db74">&#34;Handle unknown&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="how-to-handle-no-value-or-null">How to handle no value or null?</h2>
 <p>I showed you how to handle unknown values. That doesn&rsquo;t solve deserializing JSON with no <code>color</code> property or <code>color</code> set to <code>null</code> value.
 In Kotlin, we can set the <code>color</code> property nullable. As before, you will
 have to handle this situation. If you want to avoid it, you can use
 a default value as well.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(
-    <span style="color:#a6e22e">@JsonSetter</span>(nulls = Nulls.AS_EMPTY) 
-    <span style="color:#66d9ef">val</span> color: Color = Color.UNKNOWN
-)
-</code></pre></div><p><a href="https://fasterxml.github.io/jackson-annotations/javadoc/2.12/com/fasterxml/jackson/annotation/JsonSetter.html">@JsonSetter</a> transforms <code>null</code> to an empty value. This way
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pixel</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@JsonSetter</span>(nulls = Nulls.AS_EMPTY) 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> color: Color = Color.UNKNOWN
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><a href="https://fasterxml.github.io/jackson-annotations/javadoc/2.12/com/fasterxml/jackson/annotation/JsonSetter.html">@JsonSetter</a> transforms <code>null</code> to an empty value. This way
 when the <code>color</code> property is unset, <code>Color.UNKNOWN</code> is used instead.</p>
 <p>I prepared a repository that puts together everything I showed you in this article. You can see the example code <a href="https://github.com/wpanas/jackson-default-enum">here</a>.</p>
 

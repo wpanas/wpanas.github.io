@@ -225,64 +225,64 @@ for <a href="https://www.petfinder.com/developers/">Petfinder&rsquo;s public API
 that will authorize itself.</p>
 <p>Beside <code>Spring Reactive Web</code>, you will need <code>OAuth 2 Client</code> dependency. You can start developing your application from this
 <a href="https://start.spring.io/#!type=maven-project&amp;language=kotlin&amp;platformVersion=2.2.1.RELEASE&amp;packaging=jar&amp;jvmVersion=1.8&amp;groupId=com.example&amp;artifactId=demo&amp;name=demo&amp;description=Demo%20project%20for%20Spring%20Boot&amp;packageName=com.example.demo&amp;dependencies=webflux,oauth2-client">bootstrapped project</a> or add following dependencies to your Spring Boot application.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-oauth2-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;dependency&gt;</span>
-	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-webflux<span style="color:#f92672">&lt;/artifactId&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>Next you need to add configuration to <code>src/main/resources/application.yml</code>. In this example my client
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-oauth2-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-webflux<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>Next you need to add configuration to <code>src/main/resources/application.yml</code>. In this example my client
 will be distinguished by key <code>pet-finder</code>. This key is a registration id and will be needed later. You can have multiple OAuth configurations and those registration ids
 will be used to separate them.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spring.security.oauth2.client</span>:
-    <span style="color:#f92672">provider.pet-finder.token-uri</span>: <span style="color:#e6db74">&#34;https://api.petfinder.com/v2/oauth2/token&#34;</span>
-    <span style="color:#f92672">registration.pet-finder.authorization-grant-type</span>: <span style="color:#e6db74">&#34;client_credentials&#34;</span>
-</code></pre></div><p>Then setup configuration with a <code>WebClient</code> bean. To authorize to Petfinder API,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">spring.security.oauth2.client</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">provider.pet-finder.token-uri</span>: <span style="color:#e6db74">&#34;https://api.petfinder.com/v2/oauth2/token&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">registration.pet-finder.authorization-grant-type</span>: <span style="color:#e6db74">&#34;client_credentials&#34;</span>
+</span></span></code></pre></div><p>Then setup configuration with a <code>WebClient</code> bean. To authorize to Petfinder API,
 <code>WebClient</code> needs to be extended with a filter &ndash; <!-- raw HTML omitted --><code>ServerOAuth2AuthorizedClientExchangeFilterFunction</code><!-- raw HTML omitted -->.
 Using registration id &ndash; <code>pet-finder</code> &ndash; setup previously configured token URI and authorization grand type.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PetFinderConfiguration</span> {
-    <span style="color:#a6e22e">@Bean</span>
-    WebClient petFinderClient(
-        clientRegistrations: ReactiveClientRegistrationRepository, 
-        clientRepository: ServerOAuth2AuthorizedClientRepository
-    ) {
-        <span style="color:#66d9ef">val</span> filter = serverOAuth2AuthorizedClientExchangeFilterFunction(
-            clientRegistrations, 
-            clientRepository
-        )
-        filter.setDefaultClientRegistrationId(<span style="color:#e6db74">&#34;pet-finder&#34;</span>)
-
-        <span style="color:#66d9ef">return</span> WebClient.builder()
-            .filter(filter)
-            .build()
-    }
-}
-</code></pre></div><p>The last part is configuring your client id and secret. They should not
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PetFinderConfiguration</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    WebClient petFinderClient(
+</span></span><span style="display:flex;"><span>        clientRegistrations: ReactiveClientRegistrationRepository, 
+</span></span><span style="display:flex;"><span>        clientRepository: ServerOAuth2AuthorizedClientRepository
+</span></span><span style="display:flex;"><span>    ) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> filter = serverOAuth2AuthorizedClientExchangeFilterFunction(
+</span></span><span style="display:flex;"><span>            clientRegistrations, 
+</span></span><span style="display:flex;"><span>            clientRepository
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        filter.setDefaultClientRegistrationId(<span style="color:#e6db74">&#34;pet-finder&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> WebClient.builder()
+</span></span><span style="display:flex;"><span>            .filter(filter)
+</span></span><span style="display:flex;"><span>            .build()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The last part is configuring your client id and secret. They should not
 be included in your source code.
 Leaving secrets in code is asking yourself for trouble.
 The best way to set them up is to pass them as arguments
 when starting Spring application. With Maven it could look like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./mvnw spring-boot:run -Dspring-boot.run.arguments<span style="color:#f92672">=</span>--spring.security.oauth2.client.registration.pet-finder.client-secret<span style="color:#f92672">=</span>YOUR_SECRET,--spring.security.oauth2.client.registration.pet-finder.client-id<span style="color:#f92672">=</span>YOUR_ID
-</code></pre></div><p>That&rsquo;s all that is needed. Now you can use this <code>WebClient</code> to
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./mvnw spring-boot:run -Dspring-boot.run.arguments<span style="color:#f92672">=</span>--spring.security.oauth2.client.registration.pet-finder.client-secret<span style="color:#f92672">=</span>YOUR_SECRET,--spring.security.oauth2.client.registration.pet-finder.client-id<span style="color:#f92672">=</span>YOUR_ID
+</span></span></code></pre></div><p>That&rsquo;s all that is needed. Now you can use this <code>WebClient</code> to
 <a href="https://www.petfinder.com/developers/v2/docs/#get-animals">fetch information about pets</a>
 that are waiting for adoption.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AnimalsService</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> petFinderClient: WebClient) {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fetch</span>(): Flux&lt;Animal&gt; = petFinderClient
-        .<span style="color:#66d9ef">get</span>()
-        .uri(<span style="color:#e6db74">&#34;https://api.petfinder.com/v2/animals&#34;</span>)
-        .retrieve()
-        .bodyToMono(Payload<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-        .flatMapIterable { <span style="color:#66d9ef">it</span>.animals }
-}
-
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Payload</span>(<span style="color:#66d9ef">val</span> animals: Set&lt;Animal&gt;)
-
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animal</span>(<span style="color:#66d9ef">val</span> id: String, <span style="color:#66d9ef">val</span> name: String, <span style="color:#66d9ef">val</span> species: String)
-</code></pre></div><h2 id="the-summary-of-last-4-weeks-and-plans-for-future">The summary of last 4 weeks and plans for future</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AnimalsService</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> petFinderClient: WebClient) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fetch</span>(): Flux&lt;Animal&gt; = petFinderClient
+</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">get</span>()
+</span></span><span style="display:flex;"><span>        .uri(<span style="color:#e6db74">&#34;https://api.petfinder.com/v2/animals&#34;</span>)
+</span></span><span style="display:flex;"><span>        .retrieve()
+</span></span><span style="display:flex;"><span>        .bodyToMono(Payload<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>        .flatMapIterable { <span style="color:#66d9ef">it</span>.animals }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Payload</span>(<span style="color:#66d9ef">val</span> animals: Set&lt;Animal&gt;)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animal</span>(<span style="color:#66d9ef">val</span> id: String, <span style="color:#66d9ef">val</span> name: String, <span style="color:#66d9ef">val</span> species: String)
+</span></span></code></pre></div><h2 id="the-summary-of-last-4-weeks-and-plans-for-future">The summary of last 4 weeks and plans for future</h2>
 <p>I&rsquo;ve learned a lot. I&rsquo;ve read
 <a href="https://www.confluent.io/designing-event-driven-systems/">Designing Event-Driven Systems</a>
 and <a href="https://www.goodreads.com/book/show/44919.Working_Effectively_with_Legacy_Code">Working Effectively with Legacy Code</a>.

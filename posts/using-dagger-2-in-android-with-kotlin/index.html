@@ -229,95 +229,95 @@ Those are articles that inspired me:</p>
 </ul>
 <h2 id="how-to-setup-dagger-2-with-kotlin">How to setup Dagger 2 with Kotlin?</h2>
 <p>First of all, add dependencies to <code>app/build.gradle</code> and enable <code>kapt</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">...
-
-apply plugin: <span style="color:#e6db74">&#39;kotlin-kapt&#39;</span>
-
-android <span style="color:#f92672">{</span>
-    ...
-<span style="color:#f92672">}</span>
-
-dependencies <span style="color:#f92672">{</span>
-    ...
-    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android:2.x&#39;</span>
-    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-support:2.x&#39;</span>
-    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-processor:2.x&#39;</span>
-    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-compiler:2.x&#39;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h2 id="provide-modules-to-inject">Provide modules to inject</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>apply plugin: <span style="color:#e6db74">&#39;kotlin-kapt&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>android <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android:2.x&#39;</span>
+</span></span><span style="display:flex;"><span>    implementation <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-support:2.x&#39;</span>
+</span></span><span style="display:flex;"><span>    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-android-processor:2.x&#39;</span>
+</span></span><span style="display:flex;"><span>    kapt <span style="color:#e6db74">&#39;com.google.dagger:dagger-compiler:2.x&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="provide-modules-to-inject">Provide modules to inject</h2>
 <p>Organize your code in modules that provide dependencies. Activities and fragments are dependencies too. They need to be in special abstract modules that use <code>@ContributesAndroidInjector</code> annotation on methods.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
-<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActivityProvider</span> {
-    <span style="color:#a6e22e">@ContributesAndroidInjector</span>
-    <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">mainActivity</span>(): MainActivity
-}
-</code></pre></div><p>For other objects write modules with methods annotated with <code>@Provides</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeModule</span> {
-    <span style="color:#a6e22e">@Provides</span>
-    <span style="color:#a6e22e">@Singleton</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">coffeeService</span>() = CoffeeService()
-}
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeService</span> {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">prepareCoffee</span>() = <span style="color:#e6db74">&#34;Here! Espresso for you&#34;</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fetchCoffee</span>() = <span style="color:#e6db74">&#34;espresso&#34;</span>
-}
-</code></pre></div><p><code>OrderService</code> depends on <code>CoffeeService</code>. You don&rsquo;t need to use <code>@Inject</code> annotation to do this with Dagger.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderModule</span> {
-    <span style="color:#a6e22e">@Provides</span>
-    <span style="color:#a6e22e">@Singleton</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">orderService</span>(coffeeService: CoffeeService)
-     = OrderService(coffeeService)
-}
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderService</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> coffeeService: CoffeeService) {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">askForOrder</span>() = <span style="color:#e6db74">&#34;Would you like some </span><span style="color:#e6db74">${coffeeService.fetchCoffee()}</span><span style="color:#e6db74">?&#34;</span>
-}
-</code></pre></div><h2 id="prepare-your-application">Prepare your Application</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Module</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActivityProvider</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@ContributesAndroidInjector</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">mainActivity</span>(): MainActivity
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>For other objects write modules with methods annotated with <code>@Provides</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Module</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeModule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Provides</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Singleton</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">coffeeService</span>() = CoffeeService()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoffeeService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">prepareCoffee</span>() = <span style="color:#e6db74">&#34;Here! Espresso for you&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fetchCoffee</span>() = <span style="color:#e6db74">&#34;espresso&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>OrderService</code> depends on <code>CoffeeService</code>. You don&rsquo;t need to use <code>@Inject</code> annotation to do this with Dagger.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Module</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderModule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Provides</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Singleton</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">orderService</span>(coffeeService: CoffeeService)
+</span></span><span style="display:flex;"><span>     = OrderService(coffeeService)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderService</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> coffeeService: CoffeeService) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">askForOrder</span>() = <span style="color:#e6db74">&#34;Would you like some </span><span style="color:#e6db74">${coffeeService.fetchCoffee()}</span><span style="color:#e6db74">?&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="prepare-your-application">Prepare your Application</h2>
 <p>Next add <code>AppComponent</code> that extends <code>AndroidInjector&lt;DaggerApplication&gt;</code>. It is vital that one of the included modules is <code>AndroidSupportInjectionModule</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
-<span style="color:#a6e22e">@Component</span>(modules = [AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, ActivityProvider<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, CoffeeModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, OrderModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> : AndroidInjector&lt;DaggerApplication&gt;
-</code></pre></div><p>Add your own <code>DaggerApplication</code> implementation. This will be the starting point of your Android application.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InjectionExampleApplication</span> : DaggerApplication() {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">applicationInjector</span>(): AndroidInjector&lt;<span style="color:#66d9ef">out</span> DaggerApplication&gt; {
-        <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder()
-            .build()
-
-        appComponent.inject(<span style="color:#66d9ef">this</span>)
-
-        <span style="color:#66d9ef">return</span> appComponent
-    }
-}
-</code></pre></div><p>Don&rsquo;t forget to add attribute <code>android:name</code> in <code>AndroidManifest.xml</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;manifest</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
-          <span style="color:#a6e22e">package=</span><span style="color:#e6db74">&#34;com.github.wpanas.injectionexample&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;application</span>
-        <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.InjectionExampleApplication&#34;</span>
-        <span style="color:#960050;background-color:#1e0010">...</span>
-    <span style="color:#f92672">&gt;</span>
-        ...
-    <span style="color:#f92672">&lt;/application&gt;</span>
-
-<span style="color:#f92672">&lt;/manifest&gt;</span>
-</code></pre></div><p>From now on, dependencies registered by modules in <code>AppComponent</code> will be available for injection.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Singleton</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>(modules = [AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, ActivityProvider<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, CoffeeModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, OrderModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> : AndroidInjector&lt;DaggerApplication&gt;
+</span></span></code></pre></div><p>Add your own <code>DaggerApplication</code> implementation. This will be the starting point of your Android application.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InjectionExampleApplication</span> : DaggerApplication() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">applicationInjector</span>(): AndroidInjector&lt;<span style="color:#66d9ef">out</span> DaggerApplication&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder()
+</span></span><span style="display:flex;"><span>            .build()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        appComponent.inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> appComponent
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Don&rsquo;t forget to add attribute <code>android:name</code> in <code>AndroidManifest.xml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;manifest</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">package=</span><span style="color:#e6db74">&#34;com.github.wpanas.injectionexample&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;application</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.InjectionExampleApplication&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/application&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/manifest&gt;</span>
+</span></span></code></pre></div><p>From now on, dependencies registered by modules in <code>AppComponent</code> will be available for injection.</p>
 <h2 id="inject-dependencies">Inject dependencies</h2>
 <p>The last step is injecting those dependencies into your activities. Change parent class of your <code>MainActivity</code> from <code>AppCompatActivity</code> to <code>DaggerAppCompatActivity</code>. Then add your dependencies as <code>lateinit var</code> properties with <code>@Inject</code> annotation.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : DaggerAppCompatActivity() {
-
-    <span style="color:#a6e22e">@Inject</span>
-    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> coffeeService: CoffeeService
-
-    <span style="color:#a6e22e">@Inject</span>
-    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> orderService: OrderService
-
-    <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>The same you can do with all activities and fragments. Add prefix <code>Dagger-</code> to theirs parents class names. This will ensure that dependencies are injected. Don&rsquo;t forget to add those activities and fragments to module like in <code>ActivityProvider</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : DaggerAppCompatActivity() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> coffeeService: CoffeeService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> orderService: OrderService
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The same you can do with all activities and fragments. Add prefix <code>Dagger-</code> to theirs parents class names. This will ensure that dependencies are injected. Don&rsquo;t forget to add those activities and fragments to module like in <code>ActivityProvider</code>.</p>
 <h2 id="summary">Summary</h2>
 <p>Those simple steps enables you to make Dagger 2 work with Kotlin. All this code is captured in this <a href="https://github.com/wpanas/InjectionExample">repository</a>. For more complex example you can also check out this <a href="https://github.com/wpanas/StateCounter">project</a> of mine.</p>
 

@@ -229,84 +229,84 @@ If you don&rsquo;t need to share libraries between workstations, there is no nee
 <h2 id="wagon-ssh-example">Wagon-SSH Example</h2>
 <h3 id="library-example">Library example</h3>
 <p>I will show you a simple Java project configured to deploy on a remote server using SSH protocol. Let&rsquo;s take a look at <code>pom.xml</code> file of this project.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project&gt;</span>
-    ...
-    <span style="color:#f92672">&lt;properties&gt;</span>
-        <span style="color:#f92672">&lt;server.user&gt;</span>user<span style="color:#f92672">&lt;/server.user&gt;</span>
-        <span style="color:#f92672">&lt;server.host&gt;</span>localhost<span style="color:#f92672">&lt;/server.host&gt;</span>
-        <span style="color:#f92672">&lt;server.path&gt;</span>repo<span style="color:#f92672">&lt;/server.path&gt;</span>
-    <span style="color:#f92672">&lt;/properties&gt;</span>
-    <span style="color:#f92672">&lt;build&gt;</span>
-        <span style="color:#f92672">&lt;extensions&gt;</span>
-            <span style="color:#f92672">&lt;extension&gt;</span>
-                <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.wagon<span style="color:#f92672">&lt;/groupId&gt;</span>
-                <span style="color:#f92672">&lt;artifactId&gt;</span>wagon-ssh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                <span style="color:#f92672">&lt;version&gt;</span>2.7<span style="color:#f92672">&lt;/version&gt;</span>
-            <span style="color:#f92672">&lt;/extension&gt;</span>
-        <span style="color:#f92672">&lt;/extensions&gt;</span>
-    <span style="color:#f92672">&lt;/build&gt;</span>
-    <span style="color:#f92672">&lt;distributionManagement&gt;</span>
-        <span style="color:#f92672">&lt;repository&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>snapshots<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;url&gt;</span>scp://${server.user}${server.host}/${server.path}<span style="color:#f92672">&lt;/url&gt;</span>
-        <span style="color:#f92672">&lt;/repository&gt;</span>
-    <span style="color:#f92672">&lt;/distributionManagement&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>If you don&rsquo;t want to pass your password during deployment, create SSH keys for yourself and copy your public key to the server.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;server.user&gt;</span>user<span style="color:#f92672">&lt;/server.user&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;server.host&gt;</span>localhost<span style="color:#f92672">&lt;/server.host&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;server.path&gt;</span>repo<span style="color:#f92672">&lt;/server.path&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;extensions&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;extension&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.wagon<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>wagon-ssh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;version&gt;</span>2.7<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/extension&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/extensions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;distributionManagement&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;repository&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>snapshots<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;url&gt;</span>scp://${server.user}${server.host}/${server.path}<span style="color:#f92672">&lt;/url&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/repository&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/distributionManagement&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>If you don&rsquo;t want to pass your password during deployment, create SSH keys for yourself and copy your public key to the server.
 You can check it <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">here</a> how to do it. Remember that path in URL must be absolute.</p>
 <p>When we have already had our project configured properly, we have to create very useful methods to share.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.github.wpanas.maven.library<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hello</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">world</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello world&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>To deploy a library to the server simple, put this line to a terminal and execute it. If you skip -D arguments, Maven will use default values stored in properties element. You can also ignore properties and type whole URL in <code>pom.xml</code> file.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn deploy -Dserver.user<span style="color:#f92672">={</span>user<span style="color:#f92672">}</span> -Dserver.host<span style="color:#f92672">={</span>host<span style="color:#f92672">}</span> -Dserver.path<span style="color:#f92672">={</span>path<span style="color:#f92672">}</span>
-</code></pre></div><p>Remember to always change project version before deployment.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> com.github.wpanas.maven.library<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hello</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">world</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello world&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>To deploy a library to the server simple, put this line to a terminal and execute it. If you skip -D arguments, Maven will use default values stored in properties element. You can also ignore properties and type whole URL in <code>pom.xml</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn deploy -Dserver.user<span style="color:#f92672">={</span>user<span style="color:#f92672">}</span> -Dserver.host<span style="color:#f92672">={</span>host<span style="color:#f92672">}</span> -Dserver.path<span style="color:#f92672">={</span>path<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Remember to always change project version before deployment.</p>
 <h3 id="usage-example">Usage example</h3>
 <p>This project will be an example of using deployed library to our remote Maven repository. We have to add the repository to <code>pom.xml</code> file
 and add library as a dependency.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project&gt;</span>
-    ...
-    <span style="color:#f92672">&lt;properties&gt;</span>
-        <span style="color:#f92672">&lt;server.host&gt;</span>localhost:8082<span style="color:#f92672">&lt;/server.host&gt;</span>
-        <span style="color:#f92672">&lt;server.path&gt;</span>repo<span style="color:#f92672">&lt;/server.path&gt;</span>
-    <span style="color:#f92672">&lt;/properties&gt;</span>
-    <span style="color:#f92672">&lt;dependencies&gt;</span>
-        ...
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>com.github.wpanas.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>library<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
-    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-    <span style="color:#f92672">&lt;repositories&gt;</span>
-        <span style="color:#f92672">&lt;repository&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>snapshots<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;name&gt;</span>My Maven Repository<span style="color:#f92672">&lt;/name&gt;</span>
-            <span style="color:#f92672">&lt;url&gt;</span>http://${server.host}/${server.path}<span style="color:#f92672">&lt;/url&gt;</span>
-        <span style="color:#f92672">&lt;/repository&gt;</span>
-    <span style="color:#f92672">&lt;/repositories&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>Remember that directory used for Maven repository needs to have autoindex enabled.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;server.host&gt;</span>localhost:8082<span style="color:#f92672">&lt;/server.host&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;server.path&gt;</span>repo<span style="color:#f92672">&lt;/server.path&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>com.github.wpanas.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>library<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;repositories&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;repository&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>snapshots<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;name&gt;</span>My Maven Repository<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;url&gt;</span>http://${server.host}/${server.path}<span style="color:#f92672">&lt;/url&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/repository&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/repositories&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>Remember that directory used for Maven repository needs to have autoindex enabled.</p>
 <p>To use deployed library, import proper package and you are ready to use it.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.github.wpanas.maven.usage<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> com.github.wpanas.maven.library.Hello<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Usage</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Hello hello <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hello<span style="color:#f92672">();</span>
-        hello<span style="color:#f92672">.</span><span style="color:#a6e22e">world</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Here is the result.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Hello world
-
-Process finished with exit code <span style="color:#ae81ff">0</span>
-</code></pre></div><p>You can avoid adding <code>repositories</code> element to your projects. It can be set globally in <code>~/.m2/settings.xml</code> file. You can look it up <a href="https://maven.apache.org/settings.html">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> com.github.wpanas.maven.usage<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.github.wpanas.maven.library.Hello<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Usage</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Hello hello <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Hello<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        hello<span style="color:#f92672">.</span><span style="color:#a6e22e">world</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Here is the result.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Hello world
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Process finished with exit code <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>You can avoid adding <code>repositories</code> element to your projects. It can be set globally in <code>~/.m2/settings.xml</code> file. You can look it up <a href="https://maven.apache.org/settings.html">here</a>.</p>
 <h2 id="summary">Summary</h2>
 <p>Maven allows you to create personal repositories with your projects. That way project can be shared with your colleagues/coworkers.
 To make it simple, Maven&rsquo;s developers introduced wagons - small extensions that upload artifacts to a repository.</p>
