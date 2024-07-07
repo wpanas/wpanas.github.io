@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Waldemar Panas</copyright>
-    <lastBuildDate>Sat, 19 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.wpanas.eu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.wpanas.eu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The most important skills for a software engineer</title>
+      <link>https://blog.wpanas.eu/posts/the-most-important-skills/</link>
+      <pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.wpanas.eu/posts/the-most-important-skills/</guid>
+      <description>How to invest your time? What skills should you develop to become successful in software engineering? Should you go deep into very specific technology or go wide and shallow? What are the most important skills that propel your career? The answer is to gain skills that will stand the test of time.
+You have about 40 years of active work life. To put it into perspective, it&amp;rsquo;s around 2100 weeks. You need to be picky with investing time in self-development to make the best out of this time.</description>
+    </item>
+    
     <item>
       <title>Why did I stop using JUnit?</title>
       <link>https://blog.wpanas.eu/posts/why-did-i-stop-using-junit/</link>
@@ -74,7 +84,7 @@ Before you start doing tutorials about machine learning, you should learn Python
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://blog.wpanas.eu/posts/this-week-i-learned-5/</guid>
-      <description>WebClient with OAuth I started a new project with WebFlux and wanted to access API with OAuth2 authorization. The official documentation for setting up OAuth2 with WebFlux was helpful, but not quite covered my case. Later, I found Baeldung&amp;rsquo;s article &amp;ndash; Spring Security OAuth Login with WebFlux. I tried using his solution, but UnAuthenticatedServerOAuth2AuthorizedClientRepositoryexception was thrown, when I booted the application up. I searched and found the final peace at StackOverflow.</description>
+      <description>WebClient with OAuth I started a new project with WebFlux and wanted to access API with OAuth2 authorization. The official documentation for setting up OAuth2 with WebFlux was helpful, but not quite covered my case. Later, I found Baeldung&amp;rsquo;s article &amp;ndash; Spring Security OAuth Login with WebFlux. I tried using his solution, but UnAuthenticatedServerOAuth2AuthorizedClientRepository exception was thrown, when I booted the application up. I searched and found the final peace at StackOverflow.</description>
     </item>
     
     <item>
@@ -94,8 +104,8 @@ It was a blast! I appreciate the atmosphere and shared knowledge. The most devel
       
       <guid>https://blog.wpanas.eu/posts/this-week-i-learned-4/</guid>
       <description>Architecture Guilds Jakub Nabrdalik had a talk about mistakes made when moving to microservices at GeeCon Prague 2019.
-  You can watch it also in polish from Confitura 2019.
-  He did a thesis that majority of companies that migrated to microservices from a legacy monolith made similar mistakes. From his experience as a consultant, he described what was done poorly and how to do it better.
+You can watch it also in polish from Confitura 2019.
+He did a thesis that majority of companies that migrated to microservices from a legacy monolith made similar mistakes. From his experience as a consultant, he described what was done poorly and how to do it better.
 Big part of talk was about software architecture and how it was enforced in companies.</description>
     </item>
     
@@ -159,7 +169,7 @@ I looked around and found Dagger 2. The project developed by Google that provide
       <guid>https://blog.wpanas.eu/posts/spring-io-2019/</guid>
       <description>The future of Spring Framework is reactive and it is at your fingertips.
 The opening keynote The Spring I/O conference took place in Barcelona at 16-17 May 2019. Big names of Spring Framework like Ben Hale and Jürgen Höller presented what is up with Spring in 2019.
-  The most frequent topics The recurring topic of last years is reactive programming. Ben Hale and Jürgen Höller proved that they are aware of poor data access and networking tooling.</description>
+The most frequent topics The recurring topic of last years is reactive programming. Ben Hale and Jürgen Höller proved that they are aware of poor data access and networking tooling.</description>
     </item>
     
     <item>
